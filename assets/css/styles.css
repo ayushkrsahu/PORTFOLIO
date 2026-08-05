@@ -275,14 +275,6 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor;
   width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
 }
 
-/* ---- GitHub chart --------------------------------------------- */
-.ghchart {
-  overflow-x: auto;
-  padding: 1.25rem;
-  border: 1px solid var(--border); border-radius: var(--radius);
-  background: var(--surface-2);
-}
-.ghchart img { min-width: 620px; }
 
 /* ---- Experience ------------------------------------------------ */
 .exp { display: grid; gap: 1.5rem; }
