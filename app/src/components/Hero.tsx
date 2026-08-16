@@ -28,8 +28,16 @@ export const Hero: React.FC<HeroProps> = ({
         
         {/* Main Heading - Refined, moderate size matching sample UI */}
         <h2 className="text-xl sm:text-2xl md:text-3xl text-slate-600 dark:text-slate-300 font-light tracking-wide leading-relaxed">
-          Hello there, I am a <span className="font-semibold text-[#3B6982] dark:text-sky-300">Senior Data Engineer</span>
+          Hello there, I am a{' '}
+          <span className="font-semibold text-[#3B6982] dark:text-sky-300">
+            Senior Data Engineer at ByteIQ Analytics
+          </span>
         </h2>
+
+        {/* Visa status */}
+        <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-normal tracking-wide max-w-xl mx-auto">
+          Authorized to work in the UK until November 2027 (Graduate Visa)
+        </p>
 
         {/* Subtitle */}
         <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-normal tracking-wide max-w-xl mx-auto">

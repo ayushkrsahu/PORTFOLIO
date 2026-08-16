@@ -37,7 +37,7 @@ export const downloadResumePDF = () => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.setTextColor(51, 65, 85); // Slate-700
-  doc.text('Data Engineer  |  2+ Years of Experience  |  MSc Big Data Science (Distinction)', pageWidth / 2, y, { align: 'center' });
+  doc.text('Senior Data Engineer at ByteIQ Analytics  |  MSc Big Data Science (Distinction)', pageWidth / 2, y, { align: 'center' });
 
   y += 4.5;
   doc.setFont('helvetica', 'normal');
@@ -81,8 +81,9 @@ export const downloadResumePDF = () => {
     { label: 'Change Data Capture:', text: 'AWS DMS, LSN based CDC, incremental extraction, watermarking, idempotent loads' },
     { label: 'Data Modelling:', text: 'dimensional and star schemas, medallion architecture, SCD, surrogate keys, dbt, data quality' },
     { label: 'Databases & Warehouses:', text: 'Microsoft SQL Server, PostgreSQL, MySQL, Amazon RDS, Redshift, Snowflake' },
-    { label: 'Cloud & Orchestration:', text: 'AWS (S3, DMS, EC2, IAM), Azure, Apache Airflow, Databricks, Docker, LocalStack, Git' },
-    { label: 'Streaming, AI & BI:', text: 'Kafka, Spark Structured Streaming, Delta Lake, LangGraph, Azure OpenAI, Power BI' },
+    { label: 'Cloud & Orchestration:', text: 'AWS (S3, DMS, EC2, EKS, Glue, Lambda, RDS, IAM), Azure Data Factory, Apache Airflow, Databricks' },
+    { label: 'Infrastructure & DevOps:', text: 'Terraform, AWS CloudFormation, Docker, Kubernetes, Helm, GitHub Actions, Amazon ECR, PyTest, Linux, Git' },
+    { label: 'Streaming & BI:', text: 'Kafka, Spark Structured Streaming, Delta Lake, Power BI' },
   ];
 
   skillCategories.forEach(sk => {
@@ -106,20 +107,24 @@ export const downloadResumePDF = () => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(15, 23, 42);
-  doc.text('Data Engineer, ByteIQ Analytics, Remote', margin, y);
+  doc.text('Senior Data Engineer, ByteIQ Analytics, Bhubaneswar, Odisha, India (Hybrid)', margin, y);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 116, 139);
   doc.text('Jan 2026 to Present', margin + contentWidth, y, { align: 'right' });
   y += 3.8;
 
   const byteIqBullets = [
-    'Designed and built the ingestion layer for a global US relocation services company\'s SQL Server to AWS warehouse migration (operational and reporting sources), helping shape the target architecture and proposing Airflow for orchestration.',
-    'Engineered a CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least-privilege reader, runbook and security report.',
-    'Developed a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.',
-    'Created a config-driven extraction framework where a YAML manifest maps each table to one of four strategies (rowversion, datetime, identity and snapshot hash), with per-table control state for resumable loads.',
-    'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file-level control table and validation that fails the run on any row-count mismatch between staging and the control log.',
-    'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse with 18 dbt models, recommending hash-based surrogate keys after analysis showed no shared keys.',
-    'Reverse-engineered the client\'s legacy warehouse, mapping its hub-centred star schema (30 dimensions, 27 fact tables, 95 stored procedures), and authored a 20 section platform reference plus onboarding guide.'
+    'Own the ingestion and modelling layer for a global relocation services client migrating from SQL Server to an AWS warehouse, including the legacy NCM to Service Engine cutover.',
+    'Built the CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least privilege reader, runbook and security report.',
+    'Wrote a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.',
+    'Made extraction config driven through a YAML manifest mapping each table to one of four strategies (rowversion, datetime, identity and snapshot hash), with per table control state for resumable loads.',
+    'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file level control table, row quarantine with rejection reasons, and validation that fails the run on any row count mismatch.',
+    'Built the dbt layer as staged silver models for typing, CDC dedup and cross source merge, feeding a conformed gold star schema across 18 models, with a winning_source column that keeps every merge decision auditable.',
+    'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse, recommending hash based surrogate keys after analysis showed no shared natural keys.',
+    'Reverse engineered the legacy warehouse, mapping its hub centred star schema (30 dimensions, 27 fact tables, 95 stored procedures), and authored a 20 section platform reference plus onboarding guide.',
+    'Provisioned AWS infrastructure as code with Terraform and CloudFormation (VPC, compute, RDS, S3, IAM) with remote state, cutting environment setup from days to minutes with production parity.',
+    'Automated delivery in GitHub Actions: security scanning, PyTest and linting on every pull request, then Docker image builds pushed to ECR and Kubernetes rollouts via Helm.',
+    'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure, covering the provisioning, configuration and release steps a government hosted environment requires.'
   ];
 
   doc.setFont('helvetica', 'normal');
@@ -145,11 +150,12 @@ export const downloadResumePDF = () => {
   y += 3.8;
 
   const eveBullets = [
-    'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL/ELT that standardises test catalogues, pricing and slot availability from partner centres.',
+    'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL and ELT that standardised test catalogues, pricing and slot availability from partner centres.',
+    'Visited hospitals and diagnostic centres in person to pitch the platform and onboard them as clients, then worked with them to shape their catalogue and pricing data into a form the ingestion pipeline could consume.',
     'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories (MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology) and 3 empanelment types (CGHS, ECHS and corporate).',
     'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current across partner centres.',
     'Built an AWS platform with S3 as the data lake and Amazon Redshift as the warehouse, giving product and business teams visibility into bookings, conversions, top tests and centre performance.',
-    'Implemented data-quality and validation checks behind a price-comparison experience advertising savings of up to 50%, supporting search, near-me discovery and same-day report delivery.'
+    'Implemented data quality and validation checks behind a price comparison experience advertising savings of up to 50 percent, supporting search, near me discovery and same day report delivery.'
   ];
 
   doc.setFont('helvetica', 'normal');

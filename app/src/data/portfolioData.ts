@@ -2,134 +2,149 @@ import { UserProfile, Experience, Education, Certification, Project, DashboardIt
 
 export const initialProfile: UserProfile = {
   name: 'Ayush Kumar Sahu',
-  role: 'Agentic AI Systems Engineer & Enterprise Data Architect',
-  location: 'London, UK',
-  bio: 'Forward-thinking Data & AI Systems Engineer with 2+ years of enterprise experience across modern Cloud Data Warehouses, Distributed ETL/ELT Architectures, and Autonomous Agentic AI Workflows. Experienced in architecting production Databricks & Azure Data Factory pipelines, designing high-throughput Lakehouse solutions, and deploying enterprise-grade AI applications with LLMs, RAG, and multi-agent coordination frameworks.',
-  tagline: 'MSc AI (Queen Mary University of London) · Ex-Grow Data Skills · Cloud & Lakehouse Architect',
+  role: 'Senior Data Engineer at ByteIQ Analytics',
+  location: 'Bhubaneswar, Odisha, India',
+  bio: 'Senior Data Engineer at ByteIQ Analytics with an MSc in Big Data Science from Queen Mary University of London. I build the plumbing that gets data from messy source systems into warehouses people can actually trust, which in practice means change data capture off SQL Server, orchestration in Apache Airflow, modelling in dbt, and the AWS infrastructure underneath it defined as code in Terraform and CloudFormation. Most of my work sits at the point where a migration is half finished and two systems disagree, so a lot of what I do is deciding which record wins and making that decision auditable.',
+  tagline: 'MSc Big Data Science, Distinction (Queen Mary University of London) · CDC, Airflow, dbt and AWS',
   linkedinUrl: 'https://linkedin.com/in/ayush-kumar-sahu-dataengineer',
   githubUrl: 'https://github.com/Ayushsahu99',
   email: 'ayushkusahu@gmail.com',
-  pswVisaInfo: 'Authorized to work in the UK (Graduate Visa / PSW valid until 2027)'
+  pswVisaInfo: 'Authorized to work in the UK until November 2027 (Graduate Visa)'
 };
 
 export const skillsData: SkillItem[] = [
   {
     id: 'skill-1',
-    title: 'Data Cleansing & Preprocessing',
-    shortDesc: 'Automated data validation, deduplication, schema-drift enforcement, and missing-value imputation across multi-terabyte datasets.',
-    fullDesc: 'Expertise in building scalable preprocessing pipelines using PySpark and Pandas. Handles messy transactional feeds, detects schema mutations, and prepares pristine bronze-to-silver staging layers.',
-    iconName: 'cleansing',
-    tools: ['PySpark', 'Pandas', 'dbt', 'SQL', 'Delta Lake']
+    title: 'Change Data Capture & System Migration',
+    shortDesc: 'LSN based CDC off SQL Server, AWS DMS replication, watermarking, idempotent loads and cross source merge during a live cutover.',
+    fullDesc: 'My core specialism. Reading SQL Server change tables by LSN range, running AWS DMS full load plus ongoing replication into a partitioned bronze layer, and resolving which system is authoritative for a record while a migration is only half complete. Every merge decision is carried through as a column so it stays auditable downstream.',
+    iconName: 'cdc',
+    tools: ['AWS DMS', 'SQL Server CDC', 'pyodbc', 'pyarrow', 'Parquet', 'Watermarking']
   },
   {
     id: 'skill-2',
-    title: 'Data Visualization & BI Storytelling',
-    shortDesc: 'Interactive enterprise executive dashboards, dynamic DAX modeling, KPI heatmaps, and automated drill-down visual analytics.',
-    fullDesc: 'Specialized in Power BI, Tableau, and custom web analytics. Designing star-schema semantic layers with complex DAX measures, time-intelligence calculations, and live scheduled gateway refreshes.',
-    iconName: 'visualization',
-    tools: ['Power BI', 'DAX', 'Power Query', 'Tableau', 'Excel VBA']
+    title: 'Pipeline Orchestration & Automation',
+    shortDesc: 'Airflow DAGs with scheduling, retries, quarantine, watermarks and validation that stops a run rather than passing bad data on.',
+    fullDesc: 'Building production pipelines in Apache Airflow and Azure Data Factory. Loads are atomic and idempotent, bad rows are quarantined with a reason instead of dropped silently, and row count validation fails the run on any mismatch between staging and the control log.',
+    iconName: 'pipeline',
+    tools: ['Apache Airflow', 'Azure Data Factory', 'Python', 'Bash', 'Docker', 'REST APIs']
   },
   {
     id: 'skill-3',
-    title: 'Exploratory Data Analysis (EDA)',
-    shortDesc: 'Statistical profiling, hypothesis testing, anomaly detection, and correlation analysis to extract actionable business insights.',
-    fullDesc: 'Conducting in-depth multivariate statistical analysis to discover hidden patterns, segment user cohorts, evaluate distribution skews, and validate assumptions prior to ML model training.',
-    iconName: 'exploration',
-    tools: ['Python', 'Seaborn', 'NumPy', 'Scipy', 'Jupyter']
+    title: 'Data Modelling & Transformation with dbt',
+    shortDesc: 'Layered dbt models from typed staging through CDC dedup and cross source merge into a conformed gold star schema.',
+    fullDesc: 'Designing Kimball dimensional models, surrogate keys and slowly changing dimensions, expressed as version controlled dbt models so the logic is testable and reviewable. Comfortable with 3NF transactional schemas, recursive CTEs, window functions and indexing strategy on the way through.',
+    iconName: 'modeling',
+    tools: ['dbt', 'SQL Server', 'PostgreSQL', 'T-SQL', 'Kimball Methodology', 'MySQL']
   },
   {
     id: 'skill-4',
-    title: 'End-to-End Pipeline Automation',
-    shortDesc: 'Orchestrating robust batch & streaming ETL workflows with parameterized triggers, alerting, and idempotency guarantees.',
-    fullDesc: 'Constructing production data pipelines using Azure Data Factory and Apache Airflow. Implementing automated retry mechanisms, dependency DAGs, and monitoring dashboards with 99.8%+ uptime.',
-    iconName: 'pipeline',
-    tools: ['Azure Data Factory', 'Airflow', 'Bash', 'Docker', 'REST APIs']
+    title: 'Cloud Infrastructure as Code & DevOps',
+    shortDesc: 'AWS provisioned through Terraform and CloudFormation, containers on Kubernetes, and delivery automated end to end in GitHub Actions.',
+    fullDesc: 'Modular Terraform and CloudFormation stacks for VPC networking, compute, RDS, S3 and IAM, with remote state so a team can work on it safely. CI/CD runs security scanning, tests and linting, then builds Docker images, pushes to ECR and rolls Kubernetes deployments forward with Helm.',
+    iconName: 'infrastructure',
+    tools: ['Terraform', 'AWS CloudFormation', 'Docker', 'Kubernetes', 'Helm', 'GitHub Actions', 'Linux']
   },
   {
     id: 'skill-5',
-    title: 'Modern Cloud Data Warehousing',
-    shortDesc: 'Architecting Medallion Lakehouses, dimensional data marts, and serverless compute clusters on Azure and AWS.',
-    fullDesc: 'Deep experience designing Star and Snowflake schemas, optimizing Delta Lake ACID transactions with Z-Ordering, partitioning large datasets, and managing cloud storage tiering in ADLS Gen2 & S3.',
+    title: 'Cloud Data Warehousing & Lakehouse',
+    shortDesc: 'Medallion lakehouses, dimensional marts and warehouse design across AWS and Azure, with Delta Lake optimisation.',
+    fullDesc: 'Designing bronze, silver and gold layers where bronze stays immutable in object storage and the warehouse starts at staging. Experience with Delta Lake ACID transactions, Z-Ordering, partitioning strategy and storage tiering across S3, Redshift, Snowflake and ADLS Gen2.',
     iconName: 'warehouse',
-    tools: ['Azure Databricks', 'Delta Lake', 'Snowflake', 'AWS S3', 'ADLS Gen2']
+    tools: ['Amazon S3', 'Amazon Redshift', 'Snowflake', 'Databricks', 'Delta Lake', 'AWS Glue']
   },
   {
     id: 'skill-6',
-    title: 'Relational & Dimensional Modeling',
-    shortDesc: 'Designing normalized 3NF schemas, Kimball dimensional star schemas, surrogate keys, and slowly changing dimensions (SCD Types 1, 2).',
-    fullDesc: 'Architecting scalable schemas for transactional systems and analytical marts. Writing advanced SQL queries with recursive CTEs, window analytical functions, and stored procedures with performance indexing.',
-    iconName: 'modeling',
-    tools: ['PostgreSQL', 'SQL Server', 'MySQL', 'Kimball Methodology']
+    title: 'Distributed Processing & Streaming',
+    shortDesc: 'PySpark and Spark Structured Streaming, Kafka ingestion, schema evolution and out of order event handling.',
+    fullDesc: 'Processing high volume data with Apache Spark and PySpark, and handling live streams through Kafka with windowed aggregations. Building ingestion that survives schema drift by evolving the target table and rescuing unexpected columns rather than crashing the pipeline.',
+    iconName: 'cleansing',
+    tools: ['Apache Spark', 'PySpark', 'Kafka', 'Databricks Autoloader', 'Pandas', 'Scala']
   },
   {
     id: 'skill-7',
-    title: 'Agentic AI & LLM Systems',
-    shortDesc: 'Building multi-agent autonomous workflows, hybrid RAG pipelines, and LLM-powered data extractors.',
-    fullDesc: 'Developing production GenAI applications with LangChain, LangGraph, and vector databases. Deploying RAG architectures with hybrid dense/sparse search, reranking models, and prompt safety guardrails.',
-    iconName: 'ai',
-    tools: ['LangGraph', 'LangChain', 'FastAPI', 'ChromaDB', 'Claude API']
+    title: 'Data Quality & Validation',
+    shortDesc: 'Validation on the way in, quarantine tables with rejection reasons, and reconciliation that fails loudly instead of quietly.',
+    fullDesc: 'Treating data quality as a gate rather than a report. Required fields, value ranges and format checks run before anything reaches a clean table, rejected rows land in a quarantine table with the reason attached, and row counts are reconciled between staging and control before a load is accepted.',
+    iconName: 'exploration',
+    tools: ['dbt tests', 'PyTest', 'SQL', 'Great Expectations patterns', 'Python']
   },
   {
     id: 'skill-8',
-    title: 'Cloud Infrastructure & DevOps',
-    shortDesc: 'Managing containerized environments, Linux system administration, CI/CD deployment, and secure cloud networking.',
-    fullDesc: 'Configuring Red Hat Enterprise Linux servers, writing automation shell scripts, containerizing microservices via Docker, and maintaining CI/CD pipelines on GitHub Actions.',
-    iconName: 'infrastructure',
-    tools: ['Docker', 'RHEL / Linux', 'Git', 'GitHub Actions', 'Terraform']
+    title: 'Business Intelligence & Reporting',
+    shortDesc: 'Power BI reporting on top of well modelled semantic layers, published live for business and product teams.',
+    fullDesc: 'Building star schema semantic layers that make reporting straightforward, then publishing dashboards through the Power BI service with scheduled refresh. Focused on giving product and business teams a view of the numbers they can act on without asking an engineer first.',
+    iconName: 'visualization',
+    tools: ['Power BI', 'Power Query', 'SQL', 'Tableau', 'Excel']
   }
 ];
 
 export const experienceData: Experience[] = [
   {
-    role: 'Data Engineer',
+    role: 'Senior Data Engineer',
     company: 'ByteIQ Analytics',
-    location: 'Remote, United Kingdom',
-    period: 'Jan 2026 – Present',
+    location: 'Bhubaneswar, Odisha, India (Hybrid)',
+    period: 'Jan 2026 to Present',
     summary:
-      "Building the ingestion layer for a global US relocation services company's SQL Server to AWS warehouse migration — CDC, orchestration, dimensional modelling and platform documentation, owned end to end.",
+      'I own the ingestion and modelling layer for a global relocation services client moving off SQL Server onto an AWS warehouse. The interesting part of the job is that the migration is only half done at any given moment, so some records are still authoritative in the legacy system while others have already cut over. A lot of my work is deciding which record wins, and making that decision something anyone can audit later.',
     metrics: [
-      { label: 'Tables merged', value: '24' },
+      { label: 'Source tables consolidated', value: '24' },
       { label: 'Rows unified', value: '53,860' },
-      { label: 'dbt models', value: '18' },
-      { label: 'Airflow DAGs', value: '2' }
+      { label: 'dbt models built', value: '18' },
+      { label: 'Stored procedures mapped', value: '95' }
     ],
     highlights: [
       {
-        area: 'Architecture & Ingestion',
+        area: 'Change Data Capture and Ingestion',
         points: [
-          'Designed and built the ingestion layer for the migration across operational and reporting sources, helping shape the target architecture and proposing Airflow for orchestration.',
-          'Engineered a CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet — delivered with a least-privilege reader, runbook and security report.',
-          'Developed a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.'
+          'Built the change data capture pipeline off Microsoft SQL Server using AWS DMS, running a full load followed by ongoing replication into an S3 bronze layer stored as date partitioned Parquet. I handed it over with a least privilege reader account, a runbook and a short security report so the client could operate it without me.',
+          'Wrote a Python CDC extractor with pyodbc and pyarrow that reads the SQL Server change tables by LSN range through fn_cdc_get_all_changes and writes Parquet in the same folder layout AWS DMS produces, so both paths land identically and downstream code does not care which one produced a file.',
+          'Made the extraction config driven rather than hard coded. A YAML manifest maps every table to one of four strategies, rowversion, datetime, identity or snapshot hash, and each table keeps its own control state so an interrupted load picks up where it stopped instead of starting over.'
         ]
       },
       {
-        area: 'Orchestration & Data Quality',
+        area: 'Orchestration, Reliability and Data Quality',
         points: [
-          'Created a config-driven extraction framework where a YAML manifest maps each table to one of four strategies — rowversion, datetime, identity and snapshot hash — with per-table control state for resumable loads.',
-          'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file-level control table and validation that fails the run on any row-count mismatch between staging and the control log.'
+          'Automated the loads in Apache Airflow across two DAGs and seven tasks. Airflow deliberately stops at staging: it validates a partition, bulk loads the good rows, quarantines the bad ones with a rejection reason, and records a watermark. Business logic lives in the models, not the orchestrator, which keeps the loader reusable across entities.',
+          'Made every load idempotent and atomic. The insert, the quarantine write and the watermark all happen inside one transaction, and the watermark is unique per partition, so replaying the same file is a no operation rather than a duplicate. Bulk inserts use fast_executemany to keep it to a single round trip.',
+          'Added validation that fails the run rather than quietly passing bad data through. Required fields, amount ranges and currency codes are checked on the way in, and any row count mismatch between staging and the control log stops the pipeline.'
         ]
       },
       {
-        area: 'Modelling & Documentation',
+        area: 'dbt Modelling and the Legacy to Modern Migration',
         points: [
-          'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse with 18 dbt models, recommending hash-based surrogate keys after analysis showed no shared keys.',
-          "Reverse-engineered the client's legacy warehouse — mapping its hub-centred star schema of 30 dimensions, 27 fact tables and 95 stored procedures — and authored a 20-section platform reference plus onboarding guide."
+          'Built the transformation layer in dbt as four deliberate stages. Silver A takes typed copies of each source and marks where the row came from. Silver B collapses the CDC stream to the latest state per key using ROW_NUMBER partitioned by the business key and ordered by the CDC sequence, dropping deletes. Silver C does the cross source merge. Gold exposes a conformed star schema.',
+          'The merge is the part that matters. I am migrating the client from their legacy NCM system onto Service Engine, and a migration manifest records whether and when each case cut over. Cases still absent from the manifest stay authoritative in the legacy system, cases born in the modern system belong to it, and migrated cases switch across with the legacy copy suppressed.',
+          'Every row carries a winning_source column all the way into the gold fact table, so the merge is inspectable instead of a black box. I also left a date aware variant in place, comparing an analysis date against the cutover date, which opens the door to point in time reporting without reshaping the data.',
+          'Modelled the gold layer as dimensions and facts sitting on 18 dbt models, and recommended hash based surrogate keys after analysis showed the two source systems shared no natural keys at all.',
+          'Reverse engineered the legacy warehouse before touching any of it, mapping a hub centred star schema of 30 dimensions, 27 fact tables and 95 stored procedures, then wrote a 20 section platform reference and an onboarding guide so the next engineer does not have to repeat that archaeology.'
+        ]
+      },
+      {
+        area: 'Cloud Infrastructure and Delivery',
+        points: [
+          'Moved the infrastructure into code with Terraform and AWS CloudFormation, provisioning VPC networking, compute, RDS, S3 buckets and the IAM roles around them as modular stacks. Remote state lives in S3 so the team can work on it safely together, and environment setup dropped from days of manual clicking to minutes with production parity.',
+          'Set up continuous delivery in GitHub Actions. Every pull request runs a Bandit security scan, PyTest and linting, then builds a Docker image, pushes it to ECR and rolls the Kubernetes deployment forward with Helm. Manual deployment steps, and the mistakes that came with them, went away.',
+          'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure, working through the provisioning, configuration and release steps that a government hosted environment requires.'
         ]
       }
     ],
     description: [
-      "Designed and built the ingestion layer for a global US relocation services company's SQL Server to AWS warehouse migration, helping shape the target architecture and proposing Airflow for orchestration.",
-      'Engineered a CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least-privilege reader, runbook and security report.',
-      'Developed a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.',
-      'Created a config-driven extraction framework where a YAML manifest maps each table to one of four strategies (rowversion, datetime, identity and snapshot hash), with per-table control state for resumable loads.',
-      'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file-level control table and validation that fails the run on any row-count mismatch between staging and the control log.',
-      'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse with 18 dbt models, recommending hash-based surrogate keys after analysis showed no shared keys.',
-      "Reverse-engineered the client's legacy warehouse, mapping its hub-centred star schema (30 dimensions, 27 fact tables, 95 stored procedures), and authored a 20-section platform reference plus onboarding guide."
+      'Own the ingestion and modelling layer for a global relocation services client migrating from SQL Server to an AWS warehouse, including the legacy NCM to Service Engine cutover.',
+      'Built the CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least privilege reader, runbook and security report.',
+      'Wrote a Python CDC extractor with pyodbc and pyarrow that reads change tables by LSN range through fn_cdc_get_all_changes and writes Parquet in the AWS DMS folder layout.',
+      'Made extraction config driven through a YAML manifest mapping each table to one of four strategies, rowversion, datetime, identity or snapshot hash, with per table control state for resumable loads.',
+      'Automated loading in Apache Airflow across two DAGs and seven tasks, with an idempotent file level control table, row quarantine and validation that fails the run on any row count mismatch.',
+      'Built the dbt layer as staged silver models for typing, CDC dedup and cross source merge, feeding a conformed gold star schema across 18 models, with a winning_source column that keeps the merge auditable.',
+      'Merged two disjoint source systems, 53,860 rows across 24 tables, into a unified warehouse and recommended hash based surrogate keys after finding no shared natural keys.',
+      'Reverse engineered the legacy warehouse, mapping 30 dimensions, 27 fact tables and 95 stored procedures, and authored a 20 section platform reference plus onboarding guide.',
+      'Provisioned AWS infrastructure as code with Terraform and CloudFormation, and automated delivery through GitHub Actions with security scanning, PyTest, Docker, ECR, Kubernetes and Helm.',
+      'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure.'
     ],
     technologies: [
+      'Microsoft SQL Server',
       'AWS DMS',
       'Amazon S3',
-      'Microsoft SQL Server',
       'Apache Airflow',
       'dbt',
       'Python',
@@ -137,6 +152,14 @@ export const experienceData: Experience[] = [
       'pyarrow',
       'Parquet',
       'T-SQL',
+      'Terraform',
+      'AWS CloudFormation',
+      'Docker',
+      'Kubernetes',
+      'Helm',
+      'GitHub Actions',
+      'Amazon ECR',
+      'PyTest',
       'YAML',
       'AWS IAM'
     ]
@@ -145,9 +168,9 @@ export const experienceData: Experience[] = [
     role: 'Data Engineer',
     company: 'EVE Healthcare',
     location: 'Gurugram, India',
-    period: 'Jan 2023 – Aug 2024',
+    period: 'Jan 2023 to Aug 2024',
     summary:
-      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace, spanning 3 cities and 25+ diagnostic tests across partner centres.',
+      'I looked after the data pipelines and the analytics layer behind a Delhi NCR diagnostics marketplace covering three cities and more than 25 diagnostic tests. Hospitals and diagnostic centres were our clients, so alongside the engineering I spent time in front of them, visiting centres to pitch the platform and bring them onto it.',
     metrics: [
       { label: 'Cities served', value: '3' },
       { label: 'Diagnostic tests', value: '25+' },
@@ -156,32 +179,34 @@ export const experienceData: Experience[] = [
     ],
     highlights: [
       {
-        area: 'Pipelines & Orchestration',
+        area: 'Pipelines and Orchestration',
         points: [
-          'Built Python and SQL ETL/ELT that standardises test catalogues, pricing and slot availability from partner diagnostic centres.',
-          'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current across partner centres.'
+          'Built the Python and SQL ETL and ELT that pulled test catalogues, pricing and slot availability in from partner centres and standardised them, since every centre named and priced the same test differently.',
+          'Orchestrated the ingestion in Apache Airflow with scheduling, monitoring and automatic retries, so pricing and availability stayed current across partner centres without anyone chasing it manually.'
         ]
       },
       {
-        area: 'Modelling & Platform',
+        area: 'Data Modelling and Platform',
         points: [
-          'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories — MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology — and 3 empanelment types (CGHS, ECHS and corporate).',
-          'Built an AWS platform with S3 as the data lake and Amazon Redshift as the warehouse, giving product and business teams visibility into bookings, conversions, top tests and centre performance.'
+          'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across seven service categories, MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology, and three empanelment types, CGHS, ECHS and corporate.',
+          'Built the platform on AWS with S3 as the data lake and Amazon Redshift as the warehouse, which gave the product and business teams a clear view of bookings, conversions, best selling tests and how each centre was performing.'
         ]
       },
       {
-        area: 'Data Quality & Product Impact',
+        area: 'Client Engagement and Product Impact',
         points: [
-          'Implemented data-quality and validation checks behind a price-comparison experience advertising savings of up to 50%, supporting search, near-me discovery and same-day report delivery.'
+          'Went out to hospitals and diagnostic centres in person to pitch the platform and bring them on board, then worked with them on getting their catalogue and pricing data into a shape we could ingest. Sitting on both sides of that conversation made the onboarding pipeline considerably easier to design.',
+          'Implemented the data quality and validation checks behind the price comparison experience that advertised savings of up to 50 percent, which also supported search, near me discovery and same day report delivery.'
         ]
       }
     ],
     description: [
-      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL/ELT that standardises test catalogues, pricing and slot availability from partner centres.',
-      'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories (MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology) and 3 empanelment types (CGHS, ECHS and corporate).',
+      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL and ELT that standardised test catalogues, pricing and slot availability from partner centres.',
+      'Visited hospitals and diagnostic centres in person to pitch the platform and onboard them as clients, then shaped their catalogue and pricing data into a form the ingestion pipeline could consume.',
+      'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories and 3 empanelment types, CGHS, ECHS and corporate.',
       'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current across partner centres.',
       'Built an AWS platform with S3 as the data lake and Amazon Redshift as the warehouse, giving product and business teams visibility into bookings, conversions, top tests and centre performance.',
-      'Implemented data-quality and validation checks behind a price-comparison experience advertising savings of up to 50%, supporting search, near-me discovery and same-day report delivery.'
+      'Implemented data quality and validation checks behind a price comparison experience advertising savings of up to 50 percent, supporting search, near me discovery and same day report delivery.'
     ],
     technologies: [
       'Python',
@@ -192,7 +217,8 @@ export const experienceData: Experience[] = [
       'PostgreSQL',
       'ETL / ELT',
       'Dimensional Modelling',
-      'Data Quality'
+      'Data Quality',
+      'AWS'
     ]
   }
 ];
@@ -202,12 +228,16 @@ export const educationData: Education[] = [
     institution: 'Queen Mary University of London',
     degree: 'MSc Big Data Science',
     grade: 'Distinction',
-    period: 'Sep 2024 – Sep 2025'
+    period: 'Sep 2024 to Sep 2025',
+    description:
+      'Russell Group. Modules covered Big Data Processing, Cloud Computing, Neural Networks, Natural Language Processing and Machine Learning.'
   },
   {
-    institution: 'SRM IST Chennai',
-    degree: 'B.Tech Electronics & Communication',
-    period: '2019 – 2023'
+    institution: 'SRM Institute of Science and Technology, Chennai',
+    degree: 'B.Tech Electronics and Communication',
+    grade: '7.61 / 10',
+    period: 'May 2019 to Dec 2023',
+    description: 'First Class.'
   }
 ];
 
@@ -490,8 +520,8 @@ export const dashboardsData: DashboardItem[] = [
   {
     id: 'dash-1',
     title: 'Business Intelligence / Power BI Dashboard',
-    description: 'Interactive data visualization and business insights tracking key enterprise KPIs, performance trends, and core business metrics with DAX modeling.',
-    tools: ['Power BI', 'DAX', 'Data Analytics', 'Business Intelligence'],
+    description: 'Business insights tracking key enterprise KPIs, performance trends and core business metrics, published live from the Power BI service.',
+    tools: ['Power BI', 'Data Modeling', 'Data Analytics', 'Business Intelligence'],
     liveUrl: 'https://lnkd.in/gNn-wDQZ',
     linkedInUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalyst-businessintelligence-powerbi-activity-7421240683233091584-N9UP',
     embedUrl: 'https://app.powerbi.com/view?r=eyJrIjoiYTIxMzRlM2QtODI0OC00Yzc0LTk5N2ItZTNiNDgzNGY0Y2NjIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9'
@@ -499,8 +529,8 @@ export const dashboardsData: DashboardItem[] = [
   {
     id: 'dash-2',
     title: 'Sales Dashboard',
-    description: 'Interactive data visualization and business revenue insights tracking regional sales performance, product revenue velocity, and quota pacing.',
-    tools: ['Power BI', 'Data Modeling', 'DAX', 'Sales Analytics'],
+    description: 'Revenue insights tracking regional sales performance, product revenue velocity and quota pacing across the sales organisation.',
+    tools: ['Power BI', 'Data Modeling', 'SQL', 'Sales Analytics'],
     liveUrl: 'https://lnkd.in/eRQMhRqx',
     linkedInUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_powerbi-dataanalytics-salesdashboard-activity-7414954730789064704-LpDQ',
     embedUrl: 'https://app.powerbi.com/view?r=eyJrIjoiYTIxMzRlM2QtODI0OC00Yzc0LTk5N2ItZTNiNDgzNGY0Y2NjIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9'
@@ -509,7 +539,7 @@ export const dashboardsData: DashboardItem[] = [
     id: 'dash-3',
     title: 'Insurance Analysis Dashboard',
     description: 'Comprehensive risk and claim analytics tracking underwriting ratios, claim severity, customer policy renewals, and actuarial metrics.',
-    tools: ['Power BI', 'SQL', 'DAX', 'Risk Analytics'],
+    tools: ['Power BI', 'SQL', 'Data Modeling', 'Risk Analytics'],
     liveUrl: 'https://lnkd.in/eDH6rg43',
     linkedInUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalytics-businessintelligence-insuranceanalysis-activity-7412615371779690497-ZUBX',
     embedUrl: 'https://app.powerbi.com/view?r=eyJrIjoiYTIxMzRlM2QtODI0OC00Yzc0LTk5N2ItZTNiNDgzNGY0Y2NjIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9'
@@ -518,7 +548,7 @@ export const dashboardsData: DashboardItem[] = [
     id: 'dash-4',
     title: 'Healthcare Innovation Dashboard',
     description: 'Clinical and hospital operations intelligence analyzing patient wait times, treatment outcomes, acute care capacity, and healthcare efficiency.',
-    tools: ['Power BI', 'DAX', 'Clinical Informatics', 'Healthcare Analytics'],
+    tools: ['Power BI', 'SQL', 'Clinical Informatics', 'Healthcare Analytics'],
     liveUrl: 'https://lnkd.in/e_4JJ6hB',
     linkedInUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalytics-healthcareinnovation-powerbi-activity-7409928613812363266-eUAE',
     embedUrl: 'https://app.powerbi.com/view?r=eyJrIjoiYTIxMzRlM2QtODI0OC00Yzc0LTk5N2ItZTNiNDgzNGY0Y2NjIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9'
