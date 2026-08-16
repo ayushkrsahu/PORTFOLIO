@@ -1,45 +1,61 @@
-# Ayush Kumar Sahu — Portfolio
+# ayushkusahu.in — Portfolio
 
-Data Engineer portfolio site built with React + Vite and deployed to GitHub Pages.
+Personal portfolio for **Ayush Kumar Sahu** — Agentic AI Systems Engineer & Enterprise
+Data Architect. React + Vite + Tailwind, built to fully static files and served from
+GitHub Pages.
 
-## Quick Start
+## Layout
 
-### Local Development
+```
+index.html      # built site — this is what GitHub Pages serves
+assets/         # built CSS + JS bundles
+favicon.svg
+CNAME           # ayushkusahu.in
+.nojekyll       # serve assets/ verbatim (no Jekyll processing)
+app/            # the React source project
+```
+
+The repository root holds the **build output**. The source lives in `app/`.
+Editing the source alone does not change the live site — you have to rebuild
+and copy the output to the root (see below).
+
+## Working on it
+
 ```bash
+cd app
 npm install
-npm run dev
-# → http://localhost:3000
+npm run dev          # http://localhost:3000
 ```
 
-### Build for Production
+Content (profile, experience, projects, skills, certifications, dashboards) is all in
+`app/src/data/portfolioData.ts` — edit there rather than in the components.
+
+## Publishing a change
+
 ```bash
-npm run build
-# → static files in dist/
+cd app
+npm run build                 # → app/dist
+cp -r dist/. ..               # copy build output to the repo root
+cd .. && git add -A && git commit -m "Rebuild site" && git push origin main
 ```
 
-## Deployment to GitHub Pages
+GitHub Pages redeploys automatically within a minute or two of the push.
 
-1. Build the project: `npm run build`
-2. Copy `dist/` contents to repo root
-3. Ensure CNAME is set to your domain
-4. Push to GitHub
+## GitHub Pages settings
 
-GitHub Pages will automatically serve the static files at `ayushkusahu.in`.
+- **Settings → Pages → Source:** Deploy from a branch — `main`, folder `/ (root)`
+- **Settings → Pages → Custom domain:** `ayushkusahu.in`, then tick **Enforce HTTPS**
+  once the certificate is issued (can take up to an hour)
 
-## Settings
+## DNS (GoDaddy)
 
-- **GitHub Pages**: Deploy from `main` branch, folder `/ (root)`
-- **Custom Domain**: `ayushkusahu.in`
-- **.nojekyll**: Present to serve all assets verbatim
-
-## DNS Configuration (GoDaddy)
-
-| Type  | Name  | Value |
-|-------|-------|-------|
+| Type  | Name  | Value             |
+|-------|-------|-------------------|
 | A     | `@`   | `185.199.108.153` |
 | A     | `@`   | `185.199.109.153` |
 | A     | `@`   | `185.199.110.153` |
 | A     | `@`   | `185.199.111.153` |
 | CNAME | `www` | `ayushkrsahu.github.io` |
 
-Remove any GoDaddy parking/forwarding records first.
+Delete any GoDaddy parking or forwarding records for `@` first — they shadow the
+A records and the domain will never resolve to Pages.
