@@ -82,37 +82,127 @@ export const skillsData: SkillItem[] = [
 export const experienceData: Experience[] = [
   {
     role: 'Data Engineer',
-    company: 'Grow Data Skills',
-    location: 'Remote',
-    period: '2023 – Present',
-    description: [
-      'Architected end-to-end Medallion Lakehouse pipelines in Azure Databricks (Bronze -> Silver -> Gold), ingesting 20M+ records with delta-table optimization.',
-      'Constructed parameterized Azure Data Factory (ADF) pipelines with tumbling-window triggers, automated schema-drift validation, and error alert notifications.',
-      'Designed high-performance Spark SQL & PySpark transformations, decreasing ETL execution time by 38% across distributed compute clusters.',
-      'Implemented automated data quality checks and delta log compaction, maintaining 99.8% pipeline uptime for analytics consumers.'
+    company: 'ByteIQ Analytics',
+    location: 'Remote, United Kingdom',
+    period: 'Jan 2026 – Present',
+    summary:
+      "Building the ingestion layer for a global US relocation services company's SQL Server to AWS warehouse migration — CDC, orchestration, dimensional modelling and platform documentation, owned end to end.",
+    metrics: [
+      { label: 'Tables merged', value: '24' },
+      { label: 'Rows unified', value: '53,860' },
+      { label: 'dbt models', value: '18' },
+      { label: 'Airflow DAGs', value: '2' }
     ],
-    technologies: ['Azure Databricks', 'Azure Data Factory', 'PySpark', 'Delta Lake', 'SQL', 'Python', 'ADLS Gen2']
+    highlights: [
+      {
+        area: 'Architecture & Ingestion',
+        points: [
+          'Designed and built the ingestion layer for the migration across operational and reporting sources, helping shape the target architecture and proposing Airflow for orchestration.',
+          'Engineered a CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet — delivered with a least-privilege reader, runbook and security report.',
+          'Developed a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.'
+        ]
+      },
+      {
+        area: 'Orchestration & Data Quality',
+        points: [
+          'Created a config-driven extraction framework where a YAML manifest maps each table to one of four strategies — rowversion, datetime, identity and snapshot hash — with per-table control state for resumable loads.',
+          'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file-level control table and validation that fails the run on any row-count mismatch between staging and the control log.'
+        ]
+      },
+      {
+        area: 'Modelling & Documentation',
+        points: [
+          'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse with 18 dbt models, recommending hash-based surrogate keys after analysis showed no shared keys.',
+          "Reverse-engineered the client's legacy warehouse — mapping its hub-centred star schema of 30 dimensions, 27 fact tables and 95 stored procedures — and authored a 20-section platform reference plus onboarding guide."
+        ]
+      }
+    ],
+    description: [
+      "Designed and built the ingestion layer for a global US relocation services company's SQL Server to AWS warehouse migration, helping shape the target architecture and proposing Airflow for orchestration.",
+      'Engineered a CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least-privilege reader, runbook and security report.',
+      'Developed a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.',
+      'Created a config-driven extraction framework where a YAML manifest maps each table to one of four strategies (rowversion, datetime, identity and snapshot hash), with per-table control state for resumable loads.',
+      'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file-level control table and validation that fails the run on any row-count mismatch between staging and the control log.',
+      'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse with 18 dbt models, recommending hash-based surrogate keys after analysis showed no shared keys.',
+      "Reverse-engineered the client's legacy warehouse, mapping its hub-centred star schema (30 dimensions, 27 fact tables, 95 stored procedures), and authored a 20-section platform reference plus onboarding guide."
+    ],
+    technologies: [
+      'AWS DMS',
+      'Amazon S3',
+      'Microsoft SQL Server',
+      'Apache Airflow',
+      'dbt',
+      'Python',
+      'pyodbc',
+      'pyarrow',
+      'Parquet',
+      'T-SQL',
+      'YAML',
+      'AWS IAM'
+    ]
   },
   {
-    role: 'Data Analyst & Associate Engineer',
-    company: 'Enterprise Technology Labs',
-    location: 'Chennai, India',
-    period: '2022 – 2023',
-    description: [
-      'Developed high-impact Power BI reporting suites and enterprise KPI dashboards featuring dynamic DAX measures and automated scheduled refreshes.',
-      'Authored complex PostgreSQL and SQL Server stored procedures, window functions, and indexing strategies for reporting data marts.',
-      'Built automated Python extraction scripts to parse and normalize semi-structured REST API payloads into tabular warehouse targets.',
-      'Collaborated with cross-functional stakeholders to formulate data-driven optimization strategies across operational processes.'
+    role: 'Data Engineer',
+    company: 'EVE Healthcare',
+    location: 'Gurugram, India',
+    period: 'Jan 2023 – Aug 2024',
+    summary:
+      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace, spanning 3 cities and 25+ diagnostic tests across partner centres.',
+    metrics: [
+      { label: 'Cities served', value: '3' },
+      { label: 'Diagnostic tests', value: '25+' },
+      { label: 'Service categories', value: '7' },
+      { label: 'Advertised savings', value: 'up to 50%' }
     ],
-    technologies: ['Power BI', 'SQL Server', 'PostgreSQL', 'Python', 'DAX', 'Power Query', 'Excel VBA']
+    highlights: [
+      {
+        area: 'Pipelines & Orchestration',
+        points: [
+          'Built Python and SQL ETL/ELT that standardises test catalogues, pricing and slot availability from partner diagnostic centres.',
+          'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current across partner centres.'
+        ]
+      },
+      {
+        area: 'Modelling & Platform',
+        points: [
+          'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories — MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology — and 3 empanelment types (CGHS, ECHS and corporate).',
+          'Built an AWS platform with S3 as the data lake and Amazon Redshift as the warehouse, giving product and business teams visibility into bookings, conversions, top tests and centre performance.'
+        ]
+      },
+      {
+        area: 'Data Quality & Product Impact',
+        points: [
+          'Implemented data-quality and validation checks behind a price-comparison experience advertising savings of up to 50%, supporting search, near-me discovery and same-day report delivery.'
+        ]
+      }
+    ],
+    description: [
+      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL/ELT that standardises test catalogues, pricing and slot availability from partner centres.',
+      'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories (MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology) and 3 empanelment types (CGHS, ECHS and corporate).',
+      'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current across partner centres.',
+      'Built an AWS platform with S3 as the data lake and Amazon Redshift as the warehouse, giving product and business teams visibility into bookings, conversions, top tests and centre performance.',
+      'Implemented data-quality and validation checks behind a price-comparison experience advertising savings of up to 50%, supporting search, near-me discovery and same-day report delivery.'
+    ],
+    technologies: [
+      'Python',
+      'SQL',
+      'Apache Airflow',
+      'Amazon S3',
+      'Amazon Redshift',
+      'PostgreSQL',
+      'ETL / ELT',
+      'Dimensional Modelling',
+      'Data Quality'
+    ]
   }
 ];
 
 export const educationData: Education[] = [
   {
     institution: 'Queen Mary University of London',
-    degree: 'MSc Artificial Intelligence',
-    period: '2024 – 2025'
+    degree: 'MSc Big Data Science',
+    grade: 'Distinction',
+    period: 'Sep 2024 – Sep 2025'
   },
   {
     institution: 'SRM IST Chennai',

@@ -35,9 +35,14 @@ Content (profile, experience, projects, skills, certifications, dashboards) is a
 ```bash
 cd app
 npm run build                 # → app/dist
+rm -rf ../assets              # drop the previous bundles first, see note
 cp -r dist/. ..               # copy build output to the repo root
 cd .. && git add -A && git commit -m "Rebuild site" && git push origin main
 ```
+
+Vite fingerprints each bundle (`index-DEfhNzGa.js`), so a plain copy leaves the
+**old** bundles sitting in `assets/` forever. Always delete `assets/` first —
+otherwise the folder just grows with dead files on every rebuild.
 
 GitHub Pages redeploys automatically within a minute or two of the push.
 

@@ -61,11 +61,52 @@ export const ExperienceEducationSection: React.FC<ExperienceEducationSectionProp
                   </div>
                 </div>
 
-                <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 list-disc pl-5 marker:text-[#4A7C9D] dark:marker:text-sky-400 leading-relaxed">
-                  {exp.description.map((bullet, bIdx) => (
-                    <li key={bIdx}>{bullet}</li>
-                  ))}
-                </ul>
+                {exp.summary && (
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed mb-5">
+                    {exp.summary}
+                  </p>
+                )}
+
+                {exp.metrics && exp.metrics.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6">
+                    {exp.metrics.map((metric) => (
+                      <div
+                        key={metric.label}
+                        className="rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60 px-3 py-2.5"
+                      >
+                        <div className="text-base sm:text-lg font-bold font-mono text-[#3B6982] dark:text-sky-300 leading-tight">
+                          {metric.value}
+                        </div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
+                          {metric.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {exp.highlights && exp.highlights.length > 0 ? (
+                  <div className="space-y-5">
+                    {exp.highlights.map((group) => (
+                      <div key={group.area}>
+                        <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#4A7C9D] dark:text-sky-400 mb-2">
+                          {group.area}
+                        </h4>
+                        <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 list-disc pl-5 marker:text-[#4A7C9D] dark:marker:text-sky-400 leading-relaxed">
+                          {group.points.map((bullet, bIdx) => (
+                            <li key={bIdx}>{bullet}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 list-disc pl-5 marker:text-[#4A7C9D] dark:marker:text-sky-400 leading-relaxed">
+                    {exp.description.map((bullet, bIdx) => (
+                      <li key={bIdx}>{bullet}</li>
+                    ))}
+                  </ul>
+                )}
 
                 <div className="pt-5 mt-5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-1.5">
                   {exp.technologies.map((tech) => (

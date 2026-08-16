@@ -36,6 +36,12 @@ export interface Experience {
   role: string;
   company: string;
   location: string;
+  /** One-line framing of what the role actually was, shown above the bullets. */
+  summary?: string;
+  /** Short headline figures rendered as stat chips. */
+  metrics?: { label: string; value: string }[];
+  /** Themed groups of bullets, e.g. "Ingestion & CDC". Falls back to `description`. */
+  highlights?: { area: string; points: string[] }[];
   description: string[];
   technologies: string[];
 }
@@ -59,6 +65,7 @@ export interface Education {
   degree: string;
   grade?: string;
   period: string;
+  description?: string;
 }
 
 export interface DashboardItem {
