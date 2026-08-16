@@ -98,5 +98,8 @@ export interface UserProfile {
   githubUrl: string;
   email: string;
   pswVisaInfo: string;
+  /** Large banner background image. */
   photoUrl?: string;
+  /** Circular profile photo shown on the banner card. Falls back to initials. */
+  avatarUrl?: string;
 }

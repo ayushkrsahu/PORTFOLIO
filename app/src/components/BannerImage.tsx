@@ -8,6 +8,14 @@ interface BannerImageProps {
 }
 
 export const BannerImage: React.FC<BannerImageProps> = ({ profile }) => {
+  const initials = profile.name
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
   return (
     <section id="banner-section" className="w-full bg-white dark:bg-slate-950 py-2 sm:py-4 px-0 sm:px-6 md:px-12 transition-colors duration-300">
       <div className="max-w-6xl mx-auto overflow-hidden relative shadow-md rounded-none sm:rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-900 group">
@@ -21,9 +29,17 @@ export const BannerImage: React.FC<BannerImageProps> = ({ profile }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
           <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-10 flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-slate-950/75 backdrop-blur-md p-3 sm:px-5 sm:py-3 rounded-xl border border-white/10 shadow-lg text-white">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#4A7C9D] flex items-center justify-center text-white font-bold text-sm border border-white/20">
-                AS
-              </div>
+              {profile.avatarUrl ? (
+                <img
+                  src={profile.avatarUrl}
+                  alt={profile.name}
+                  className="w-10 h-10 rounded-full object-cover object-center border border-white/20 shrink-0"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-[#4A7C9D] flex items-center justify-center text-white font-bold text-sm border border-white/20 shrink-0">
+                  {initials}
+                </div>
+              )}
               <div>
                 <div className="text-sm font-bold tracking-wide text-white flex items-center gap-2">
                   {profile.name}
