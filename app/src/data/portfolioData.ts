@@ -4,7 +4,7 @@ export const initialProfile: UserProfile = {
   name: 'Ayush Kumar Sahu',
   role: 'Senior Data Engineer at ByteIQ Analytics',
   location: 'Bhubaneswar, Odisha, India',
-  bio: 'Senior Data Engineer at ByteIQ Analytics with an MSc in Big Data Science from Queen Mary University of London. I build the plumbing that gets data from messy source systems into warehouses people can actually trust, which in practice means change data capture off SQL Server, orchestration in Apache Airflow, modelling in dbt, and the AWS infrastructure underneath it defined as code in Terraform and CloudFormation. Most of my work sits at the point where a migration is half finished and two systems disagree, so a lot of what I do is deciding which record wins and making that decision auditable.',
+  bio: 'Senior Data Engineer at ByteIQ Analytics with an MSc in Big Data Science from Queen Mary University of London. I build the plumbing that gets data out of messy source systems and into warehouses people can actually trust, which in practice means change data capture off SQL Server through AWS DMS, orchestration in Airflow, modelling in dbt, and the AWS infrastructure underneath it defined as code. Most of my current work is a warehouse modernisation for a corporate relocation business, where a client facing reporting portal has to present one coherent view while two source systems run side by side through a migration.',
   tagline: 'MSc Big Data Science, Distinction (Queen Mary University of London) · CDC, Airflow, dbt and AWS',
   linkedinUrl: 'https://linkedin.com/in/ayush-kumar-sahu-dataengineer',
   githubUrl: 'https://github.com/Ayushsahu99',
@@ -16,24 +16,24 @@ export const skillsData: SkillItem[] = [
   {
     id: 'skill-1',
     title: 'Change Data Capture & System Migration',
-    shortDesc: 'LSN based CDC off SQL Server, AWS DMS replication, watermarking, idempotent loads and cross source merge during a live cutover.',
-    fullDesc: 'My core specialism. Reading SQL Server change tables by LSN range, running AWS DMS full load plus ongoing replication into a partitioned bronze layer, and resolving which system is authoritative for a record while a migration is only half complete. Every merge decision is carried through as a column so it stays auditable downstream.',
+    shortDesc: 'AWS DMS log based CDC off SQL Server into partitioned Parquet, replacing nightly full scans, with conformance across two source systems mid migration.',
+    fullDesc: 'My core specialism. Reading SQL Server transaction logs through AWS DMS so the cost of a load scales with the volume of change rather than the volume of data, landing raw immutable Parquet in a bronze layer, then conforming business keys across a legacy estate and its replacement platform while both run side by side through a migration.',
     iconName: 'cdc',
-    tools: ['AWS DMS', 'SQL Server CDC', 'pyodbc', 'pyarrow', 'Parquet', 'Watermarking']
+    tools: ['AWS DMS', 'SQL Server CDC', 'pyarrow', 'pyodbc', 'Parquet', 'Amazon S3']
   },
   {
     id: 'skill-2',
     title: 'Pipeline Orchestration & Automation',
-    shortDesc: 'Airflow DAGs with scheduling, retries, quarantine, watermarks and validation that stops a run rather than passing bad data on.',
-    fullDesc: 'Building production pipelines in Apache Airflow and Azure Data Factory. Loads are atomic and idempotent, bad rows are quarantined with a reason instead of dropped silently, and row count validation fails the run on any mismatch between staging and the control log.',
+    shortDesc: 'Airflow on MWAA with watermark based idempotency, a quarantine path for bad rows, chunked bulk loads and lineage columns on every row.',
+    fullDesc: 'Building production pipelines in Apache Airflow and Azure Data Factory. A re run cannot double load because watermarks record every partition already processed, one malformed row goes to quarantine with its payload and reason rather than costing a night of reporting, and lineage columns let any figure in a report be traced back to the event that produced it.',
     iconName: 'pipeline',
-    tools: ['Apache Airflow', 'Azure Data Factory', 'Python', 'Bash', 'Docker', 'REST APIs']
+    tools: ['Apache Airflow', 'MWAA', 'Azure Data Factory', 'Python', 'Docker', 'Bash']
   },
   {
     id: 'skill-3',
     title: 'Data Modelling & Transformation with dbt',
     shortDesc: 'Layered dbt models from typed staging through CDC dedup and cross source merge into a conformed gold star schema.',
-    fullDesc: 'Designing Kimball dimensional models, surrogate keys and slowly changing dimensions, expressed as version controlled dbt models so the logic is testable and reviewable. Comfortable with 3NF transactional schemas, recursive CTEs, window functions and indexing strategy on the way through.',
+    fullDesc: 'Designing Kimball dimensional models, surrogate keys and slowly changing dimensions, expressed as version controlled dbt models so the logic is testable and reviewable. I pin gold columns with dbt contracts so schema drift fails the build rather than quietly breaking a downstream report, and I am comfortable with 3NF schemas, recursive CTEs, window functions and indexing strategy on the way through.',
     iconName: 'modeling',
     tools: ['dbt', 'SQL Server', 'PostgreSQL', 'T-SQL', 'Kimball Methodology', 'MySQL']
   },
@@ -64,10 +64,10 @@ export const skillsData: SkillItem[] = [
   {
     id: 'skill-7',
     title: 'Data Quality & Validation',
-    shortDesc: 'Validation on the way in, quarantine tables with rejection reasons, and reconciliation that fails loudly instead of quietly.',
-    fullDesc: 'Treating data quality as a gate rather than a report. Required fields, value ranges and format checks run before anything reaches a clean table, rejected rows land in a quarantine table with the reason attached, and row counts are reconciled between staging and control before a load is accepted.',
+    shortDesc: 'Validation on the way in, quarantine over failure, dbt contracts on gold, and root cause analysis that traces a defect to the real assumption behind it.',
+    fullDesc: 'Treating data quality as a gate rather than a report. Checks run before anything reaches a clean table and rejected rows are isolated with a reason attached. Just as often the work is analytical: tracing a duplicate row defect past the load logic to an incorrect grain assumption upstream, and knowing when the fix is a business decision rather than one to make unilaterally.',
     iconName: 'exploration',
-    tools: ['dbt tests', 'PyTest', 'SQL', 'Great Expectations patterns', 'Python']
+    tools: ['dbt tests', 'dbt contracts', 'SQL', 'PyTest', 'Python']
   },
   {
     id: 'skill-8',
@@ -86,81 +86,101 @@ export const experienceData: Experience[] = [
     location: 'Bhubaneswar, Odisha, India (Hybrid)',
     period: 'Jan 2026 to Present',
     summary:
-      'I own the ingestion and modelling layer for a global relocation services client moving off SQL Server onto an AWS warehouse. The interesting part of the job is that the migration is only half done at any given moment, so some records are still authoritative in the legacy system while others have already cut over. A lot of my work is deciding which record wins, and making that decision something anyone can audit later.',
+      'Data engineer on the NuCompass data warehouse modernisation. NuCompass runs corporate relocations, and their client HR teams never touch the internal systems, so everything reaches them through the CPC reporting portal. Reporting is the product surface here rather than a downstream extra. The business was running two source systems at once mid migration, a legacy on premises Back Office estate and the vendor hosted Service Engine platform, and the portal had to present one coherent view across both.',
     metrics: [
-      { label: 'Source tables consolidated', value: '24' },
-      { label: 'Rows unified', value: '53,860' },
-      { label: 'dbt models built', value: '18' },
-      { label: 'Stored procedures mapped', value: '95' }
+      { label: 'Service Engine tables navigated', value: '1,500+' },
+      { label: 'Reports consolidated', value: '40 to 18' },
+      { label: 'Legacy estate mapped', value: '~500 GB' },
+      { label: 'Gold warehouse served', value: '~10 GB' }
     ],
     highlights: [
       {
         area: 'Change Data Capture and Ingestion',
         points: [
-          'Built the change data capture pipeline off Microsoft SQL Server using AWS DMS, running a full load followed by ongoing replication into an S3 bronze layer stored as date partitioned Parquet. I handed it over with a least privilege reader account, a runbook and a short security report so the client could operate it without me.',
-          'Wrote a Python CDC extractor with pyodbc and pyarrow that reads the SQL Server change tables by LSN range through fn_cdc_get_all_changes and writes Parquet in the same folder layout AWS DMS produces, so both paths land identically and downstream code does not care which one produced a file.',
-          'Made the extraction config driven rather than hard coded. A YAML manifest maps every table to one of four strategies, rowversion, datetime, identity or snapshot hash, and each table keeps its own control state so an interrupted load picks up where it stopped instead of starting over.'
+          'Built and demonstrated the CDC proof of concept before the team committed to the pattern. Stood up SQL Server locally, enabled CDC at database and table level, generated insert, update and delete activity, and exported the captured changes to Parquet in S3, reproducing the bronze layer end to end and surfacing the details that mattered at production scale.',
+          'The pipeline now replaces a nightly master stored procedure that rebuilt warehouse tables by full scanning the sources and got slower every month. AWS DMS reads the SQL Server transaction logs on both systems and lands only the actual changes in S3 as date partitioned Parquet, raw, immutable and replayable.',
+          'Built the Airflow loader on MWAA that moves bronze Parquet into RDS SQL Server staging, reading with pyarrow and writing with pyodbc using chunked fast_executemany batches. Watermarks make a re run safe, rows failing validation go to a quarantine table with the payload, reason and DAG run id rather than killing the load, and every row carries ingested_at, source_op, source_seq and dbt_run_id so any figure in a client report traces back to the CDC event that produced it.'
         ]
       },
       {
-        area: 'Orchestration, Reliability and Data Quality',
+        area: 'Warehouse Modelling in dbt',
         points: [
-          'Automated the loads in Apache Airflow across two DAGs and seven tasks. Airflow deliberately stops at staging: it validates a partition, bulk loads the good rows, quarantines the bad ones with a rejection reason, and records a watermark. Business logic lives in the models, not the orchestrator, which keeps the loader reusable across entities.',
-          'Made every load idempotent and atomic. The insert, the quarantine write and the watermark all happen inside one transaction, and the watermark is unique per partition, so replaying the same file is a no operation rather than a duplicate. Bulk inserts use fast_executemany to keep it to a single round trip.',
-          'Added validation that fails the run rather than quietly passing bad data through. Required fields, amount ranges and currency codes are checked on the way in, and any row count mismatch between staging and the control log stops the pipeline.'
+          'Modelled a bronze, silver and gold medallion architecture in dbt. Silver deduplicates the multiple row versions CDC emits, conforms types and resolves business keys across the two source systems. Gold is a star schema of fact tables for expense, services, home sale cost and active transferee status, surrounded by conformed main, date and corporate client dimensions.',
+          'Pinned every gold column with dbt contracts, so schema drift fails the CI build instead of quietly breaking a client facing report.',
+          'Chose RDS SQL Server over a columnar warehouse deliberately. At roughly 10 GB of gold data, MPP would have been over engineering, and staying on SQL Server end to end avoided T-SQL translation from the sources and kept native MONEY and DATETIME2 handling. Because dbt sits between silver and gold, changing that engine later is a target change rather than a rewrite.'
         ]
       },
       {
-        area: 'dbt Modelling and the Legacy to Modern Migration',
+        area: 'Discovery, Data Quality and Security',
         points: [
-          'Built the transformation layer in dbt as four deliberate stages. Silver A takes typed copies of each source and marks where the row came from. Silver B collapses the CDC stream to the latest state per key using ROW_NUMBER partitioned by the business key and ordered by the CDC sequence, dropping deletes. Silver C does the cross source merge. Gold exposes a conformed star schema.',
-          'The merge is the part that matters. I am migrating the client from their legacy NCM system onto Service Engine, and a migration manifest records whether and when each case cut over. Cases still absent from the manifest stay authoritative in the legacy system, cases born in the modern system belong to it, and migrated cases switch across with the legacy copy suppressed.',
-          'Every row carries a winning_source column all the way into the gold fact table, so the merge is inspectable instead of a black box. I also left a date aware variant in place, comparing an analysis date against the cutover date, which opens the door to point in time reporting without reshaping the data.',
-          'Modelled the gold layer as dimensions and facts sitting on 18 dbt models, and recommended hash based surrogate keys after analysis showed the two source systems shared no natural keys at all.',
-          'Reverse engineered the legacy warehouse before touching any of it, mapping a hub centred star schema of 30 dimensions, 27 fact tables and 95 stored procedures, then wrote a 20 section platform reference and an onboarding guide so the next engineer does not have to repeat that archaeology.'
+          'The legacy estate had no current documentation and nobody who understood all of it, so I wrote a read only Python discovery tool with pyodbc and pandas that pulled table inventories ordered by row count, keys and constraints, foreign keys, object dependencies, procedure and view bodies, and samples with PII hashed. It ran with SELECT and NOLOCK against QA without blocking anyone, and became the input to the source to target column mapping.',
+          'Mapped Back Office columns to their Service Engine equivalents alongside the architecture lead, working through a transactional database of over 1,500 tables to find the handful that actually carry the business, and left behind an onboarding map so the next engineer does not repeat the discovery cost.',
+          'Root caused a long standing duplicate row defect in the active transferee status fact table. The three column key everyone assumed was unique was not, because a transferee can legitimately have several household goods shipments with different load dates. The duplication came from the upstream source view, not the load logic where the team had been looking. I worked all ten affected cases, separated genuine rescheduled moves from true double entries, and escalated the fix as a business decision on table grain rather than deciding it unilaterally.',
+          'Documented a class of bug in the legacy incremental load where null lookup columns broke source to destination comparisons silently, since in SQL a null never equals a null, and derived stand in values so inserts, updates and deletes resolved correctly.',
+          'Authored the security assessment for the DMS CDC pipeline as defence in depth across three trust zones, covering least privilege IAM and database roles, KMS encryption in transit and at rest, VPC isolation, bucket hardening and audit logging. The finding that drove most discussion: DMS writes deletes as tagged records that retain the original row values, so an erasure satisfied in the source database is not satisfied in the lake, which matters directly for transferee PII under a multi year retention policy. I documented the remediation path alongside it.'
         ]
       },
       {
-        area: 'Cloud Infrastructure and Delivery',
+        area: 'Serving Layer and Reporting',
         points: [
-          'Moved the infrastructure into code with Terraform and AWS CloudFormation, provisioning VPC networking, compute, RDS, S3 buckets and the IAM roles around them as modular stacks. Remote state lives in S3 so the team can work on it safely together, and environment setup dropped from days of manual clicking to minutes with production parity.',
-          'Set up continuous delivery in GitHub Actions. Every pull request runs a Bandit security scan, PyTest and linting, then builds a Docker image, pushes it to ECR and rolls the Kubernetes deployment forward with Helm. Manual deployment steps, and the mistakes that came with them, went away.',
-          'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure, working through the provisioning, configuration and release steps that a government hosted environment requires.'
+          'Cube.dev sits in front of gold holding pre aggregations in S3, so dashboard queries hit a cache rather than the warehouse, and enforces row level security by corporate client id so no client can ever see another client\'s transferees.',
+          'The portal consumes that through two channels, Power BI Embedded for visual reports and native Angular data grids for dense tabular reports that need custom row actions. I documented the split and the reasoning behind it.',
+          'Worked the report inventory down from roughly 40 fragmented legacy reports to a Phase 1 set of 18, consolidating where separate visuals answered overlapping questions and chasing down the ones that could not be located in the workspaces.'
+        ]
+      },
+      {
+        area: 'Platform Engineering and Delivery',
+        points: [
+          'Provisioned AWS infrastructure as code with Terraform and CloudFormation, covering networking, compute, RDS, S3 and the IAM roles around them, with remote state so the team can work on it together safely.',
+          'Automated delivery through GitHub Actions, running security scanning, tests and linting on every pull request before building Docker images and rolling deployments forward.',
+          'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure, working through the provisioning, configuration and release steps a government hosted environment requires.',
+          'Worked under genuine governance rather than a sandbox: read only by default until explicitly authorised, all DDL and view definitions in source control first, and no vendor schema exposed to third party tooling, so AI assisted work ran against dummy schemas and synthetic data only.'
+        ]
+      },
+      {
+        area: 'Designed and In Delivery',
+        points: [
+          'Historical migration and cutover from Back Office into Service Engine through the vendor import tool, where the real complexity is that active and historic data need different handling per client and several clients have already partially migrated. Getting those rules explicit is what prevents duplicate transferee records at cutover.',
+          'Decommissioning the legacy transactional databases, the old warehouse and the legacy Power BI estate, running both stacks in parallel and reconciling report level output before the portal switches over.',
+          'Ask NCM, a LangGraph agent over the gold star schema that lets a mobility manager ask for at risk transferees or pending approvals in plain English. It queries through Cube.dev rather than the warehouse directly, so the same row level security that protects the dashboards protects the agent and no client can prompt their way into another client\'s data.',
+          'Moving the reporting layer off Power BI import mode to remove the 15 to 20 second client facing load times, and tightening freshness from the legacy nightly batch toward near real time on the CDC stream.'
         ]
       }
     ],
     description: [
-      'Own the ingestion and modelling layer for a global relocation services client migrating from SQL Server to an AWS warehouse, including the legacy NCM to Service Engine cutover.',
-      'Built the CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least privilege reader, runbook and security report.',
-      'Wrote a Python CDC extractor with pyodbc and pyarrow that reads change tables by LSN range through fn_cdc_get_all_changes and writes Parquet in the AWS DMS folder layout.',
-      'Made extraction config driven through a YAML manifest mapping each table to one of four strategies, rowversion, datetime, identity or snapshot hash, with per table control state for resumable loads.',
-      'Automated loading in Apache Airflow across two DAGs and seven tasks, with an idempotent file level control table, row quarantine and validation that fails the run on any row count mismatch.',
-      'Built the dbt layer as staged silver models for typing, CDC dedup and cross source merge, feeding a conformed gold star schema across 18 models, with a winning_source column that keeps the merge auditable.',
-      'Merged two disjoint source systems, 53,860 rows across 24 tables, into a unified warehouse and recommended hash based surrogate keys after finding no shared natural keys.',
-      'Reverse engineered the legacy warehouse, mapping 30 dimensions, 27 fact tables and 95 stored procedures, and authored a 20 section platform reference plus onboarding guide.',
-      'Provisioned AWS infrastructure as code with Terraform and CloudFormation, and automated delivery through GitHub Actions with security scanning, PyTest, Docker, ECR, Kubernetes and Helm.',
-      'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure.'
+      'Data engineer on the NuCompass data warehouse modernisation, feeding a client facing relocation reporting portal from two source systems running at once during a platform migration.',
+      'Engineered a change data capture pipeline replacing a nightly full scan stored procedure, streaming SQL Server changes through AWS DMS into an S3 Parquet bronze layer.',
+      'Built the Airflow loader on MWAA moving partitioned Parquet from S3 into RDS SQL Server staging, with watermark based idempotency, a row level quarantine path, chunked bulk inserts via fast_executemany, and lineage columns that trace any reported figure back to its CDC event.',
+      'Modelled a bronze, silver and gold medallion architecture in dbt terminating in a star schema, with dbt contracts failing CI on any gold schema drift.',
+      'Delivered the CDC proof of concept that validated the pattern before the team committed to it, covering partition layout, Parquet schema stability and operation handling.',
+      'Authored a defence in depth security assessment of the DMS CDC pipeline across three trust zones, and identified that CDC captured deletes retain source row values in S3, with direct data retention and privacy consequences.',
+      'Wrote a read only Python discovery tool that reverse engineered an undocumented legacy estate into table inventories, dependency graphs, key constraints and procedure bodies, forming the input to the source to target column mapping across a 1,500 table target database.',
+      'Root caused a duplicate row defect in a warehouse fact table to an incorrect grain assumption in the upstream source view, and escalated the fix as a business decision on table grain.',
+      'Consolidated roughly 40 fragmented legacy reports into a Phase 1 set of 18 across Power BI Embedded and native Angular data grids, served through Cube.dev pre aggregations with row level security by corporate client.',
+      'Provisioned AWS infrastructure as code with Terraform and CloudFormation, automated delivery through GitHub Actions, and supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure.'
     ],
     technologies: [
       'Microsoft SQL Server',
       'AWS DMS',
       'Amazon S3',
-      'Apache Airflow',
+      'Amazon RDS',
+      'Apache Airflow (MWAA)',
       'dbt',
       'Python',
-      'pyodbc',
       'pyarrow',
+      'pyodbc',
+      'pandas',
       'Parquet',
       'T-SQL',
+      'Cube.dev',
+      'Power BI Embedded',
+      'Angular',
+      'LangGraph',
       'Terraform',
       'AWS CloudFormation',
       'Docker',
-      'Kubernetes',
-      'Helm',
       'GitHub Actions',
-      'Amazon ECR',
-      'PyTest',
-      'YAML',
+      'AWS KMS',
       'AWS IAM'
     ]
   },

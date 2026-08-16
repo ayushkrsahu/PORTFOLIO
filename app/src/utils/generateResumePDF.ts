@@ -43,7 +43,7 @@ export const downloadResumePDF = () => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(71, 85, 105); // Slate-600
-  doc.text('United Kingdom (Remote)  |  +44 7405813318  |  ayushkusahuk@gmail.com  |  LinkedIn  |  GitHub  |  Portfolio', pageWidth / 2, y, { align: 'center' });
+  doc.text('Bhubaneswar, Odisha, India  |  +44 7405813318  |  ayushkusahuk@gmail.com  |  LinkedIn  |  GitHub  |  Portfolio', pageWidth / 2, y, { align: 'center' });
 
   y += 4;
   doc.setFont('helvetica', 'normal');
@@ -57,7 +57,7 @@ export const downloadResumePDF = () => {
   doc.setFontSize(8.5);
   doc.setTextColor(51, 65, 85);
   const profileLines = doc.splitTextToSize(
-    'Data engineer with 2+ years across a healthcare diagnostics marketplace and an SQL Server to AWS warehouse migration, plus an MSc in Big Data Science (Distinction). Builds CDC and ETL/ELT pipelines with AWS DMS, S3, Airflow, dbt and Python, owning data modelling, validation and clear documentation end to end.',
+    'Data engineer with 2+ years across a healthcare diagnostics marketplace and an on premises SQL Server to AWS warehouse modernisation, plus an MSc in Big Data Science (Distinction). Builds log based CDC and ELT pipelines with AWS DMS, S3, Airflow and dbt, terminating in star schemas that serve a client facing reporting portal, and owns the data modelling, validation and documentation end to end.',
     contentWidth
   );
   doc.text(profileLines, margin, y);
@@ -78,12 +78,12 @@ export const downloadResumePDF = () => {
   addSectionHeading('TECHNICAL SKILLS');
   const skillCategories = [
     { label: 'Languages & Processing:', text: 'Python (pandas, PySpark, pyodbc, pyarrow), SQL, T-SQL, Spark SQL, ETL and ELT' },
-    { label: 'Change Data Capture:', text: 'AWS DMS, LSN based CDC, incremental extraction, watermarking, idempotent loads' },
-    { label: 'Data Modelling:', text: 'dimensional and star schemas, medallion architecture, SCD, surrogate keys, dbt, data quality' },
+    { label: 'Change Data Capture:', text: 'AWS DMS log based CDC, partitioned Parquet bronze, watermarking, quarantine, idempotent loads' },
+    { label: 'Data Modelling:', text: 'dimensional and star schemas, medallion architecture, SCD, surrogate keys, dbt models, dbt contracts' },
     { label: 'Databases & Warehouses:', text: 'Microsoft SQL Server, PostgreSQL, MySQL, Amazon RDS, Redshift, Snowflake' },
     { label: 'Cloud & Orchestration:', text: 'AWS (S3, DMS, EC2, EKS, Glue, Lambda, RDS, IAM), Azure Data Factory, Apache Airflow, Databricks' },
     { label: 'Infrastructure & DevOps:', text: 'Terraform, AWS CloudFormation, Docker, Kubernetes, Helm, GitHub Actions, Amazon ECR, PyTest, Linux, Git' },
-    { label: 'Streaming & BI:', text: 'Kafka, Spark Structured Streaming, Delta Lake, Power BI' },
+    { label: 'Serving & BI:', text: 'Cube.dev pre-aggregations, row level security, Power BI Embedded, Angular data grids, Kafka, Spark Structured Streaming' },
   ];
 
   skillCategories.forEach(sk => {
@@ -114,17 +114,15 @@ export const downloadResumePDF = () => {
   y += 3.8;
 
   const byteIqBullets = [
-    'Own the ingestion and modelling layer for a global relocation services client migrating from SQL Server to an AWS warehouse, including the legacy NCM to Service Engine cutover.',
-    'Built the CDC pipeline on SQL Server with AWS DMS, running full load plus ongoing replication into an S3 bronze layer as partitioned Parquet, delivered with a least privilege reader, runbook and security report.',
-    'Wrote a Python CDC extractor with pyodbc and pyarrow that reads SQL Server change tables by LSN range via fn_cdc_get_all_changes, writing Parquet in the AWS DMS S3 folder layout.',
-    'Made extraction config driven through a YAML manifest mapping each table to one of four strategies (rowversion, datetime, identity and snapshot hash), with per table control state for resumable loads.',
-    'Automated loading with Apache Airflow across two DAGs and seven tasks, using an idempotent file level control table, row quarantine with rejection reasons, and validation that fails the run on any row count mismatch.',
-    'Built the dbt layer as staged silver models for typing, CDC dedup and cross source merge, feeding a conformed gold star schema across 18 models, with a winning_source column that keeps every merge decision auditable.',
-    'Merged two disjoint source systems (53,860 rows across 24 tables) into a unified SQL Server warehouse, recommending hash based surrogate keys after analysis showed no shared natural keys.',
-    'Reverse engineered the legacy warehouse, mapping its hub centred star schema (30 dimensions, 27 fact tables, 95 stored procedures), and authored a 20 section platform reference plus onboarding guide.',
-    'Provisioned AWS infrastructure as code with Terraform and CloudFormation (VPC, compute, RDS, S3, IAM) with remote state, cutting environment setup from days to minutes with production parity.',
-    'Automated delivery in GitHub Actions: security scanning, PyTest and linting on every pull request, then Docker image builds pushed to ECR and Kubernetes rollouts via Helm.',
-    'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure, covering the provisioning, configuration and release steps a government hosted environment requires.'
+    'Data engineer on the NuCompass data warehouse modernisation, feeding a client facing relocation reporting portal from two source systems running side by side through a platform migration.',
+    'Engineered a change data capture pipeline replacing a nightly full scan stored procedure, streaming SQL Server changes via AWS DMS into an S3 Parquet bronze layer, after delivering the proof of concept that validated the pattern.',
+    'Built the Airflow (MWAA) loader moving partitioned Parquet from S3 into RDS SQL Server staging, with watermark based idempotency, a row level quarantine path, chunked bulk inserts via fast_executemany, and lineage columns tracing any reported figure back to its CDC event.',
+    'Modelled a bronze, silver and gold medallion architecture in dbt terminating in a star schema, with dbt contracts pinning every gold column so schema drift fails CI rather than breaking a client report.',
+    'Authored a defence in depth security assessment of the DMS CDC pipeline across three trust zones, identifying that CDC captured deletes retain source row values in S3, with direct data retention and privacy consequences for transferee PII.',
+    'Wrote a read only Python discovery tool (pyodbc, pandas) that reverse engineered an undocumented legacy estate into table inventories, dependency graphs, key constraints and procedure bodies, forming the input to source to target column mapping across a 1,500 table target database.',
+    'Root caused a duplicate row defect in a warehouse fact table to an incorrect grain assumption in the upstream source view, worked all affected cases, and escalated the fix as a business decision on table grain.',
+    'Consolidated roughly 40 fragmented legacy reports into a Phase 1 set of 18 across Power BI Embedded and native Angular data grids, served through Cube.dev pre aggregations with row level security by corporate client.',
+    'Provisioned AWS infrastructure as code with Terraform and CloudFormation, automated delivery through GitHub Actions, and supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure.'
   ];
 
   doc.setFont('helvetica', 'normal');
