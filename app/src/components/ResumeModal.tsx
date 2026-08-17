@@ -120,7 +120,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({
                 <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 tracking-wider uppercase border-b border-slate-300 dark:border-slate-700 pb-0.5">EDUCATION</h3>
                 <div className="flex justify-between items-baseline text-xs sm:text-[13px]">
                   <span className="font-bold text-slate-800 dark:text-slate-200">MSc Big Data Science (Distinction), Queen Mary University of London</span>
-                  <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">Sep 2024 to Sep 2025</span>
+                  <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">2024 to 2025</span>
                 </div>
               </div>
 

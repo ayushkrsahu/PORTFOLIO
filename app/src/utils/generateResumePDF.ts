@@ -71,7 +71,7 @@ export const downloadResumePDF = () => {
   doc.text('MSc Big Data Science (Distinction), Queen Mary University of London', margin, y);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 116, 139);
-  doc.text('Sep 2024 to Sep 2025', margin + contentWidth, y, { align: 'right' });
+  doc.text('2024 to 2025', margin + contentWidth, y, { align: 'right' });
   y += 5;
 
   // 4. TECHNICAL SKILLS SECTION
@@ -107,7 +107,7 @@ export const downloadResumePDF = () => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(15, 23, 42);
-  doc.text('Senior Data Engineer, ByteIQ Analytics, Bhubaneswar, Odisha, India (Hybrid)', margin, y);
+  doc.text('Senior Data Engineer, ByteIQ Analytics, Bhubaneswar, Odisha, India (On-site)', margin, y);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 116, 139);
   doc.text('Jan 2026 to Present', margin + contentWidth, y, { align: 'right' });
