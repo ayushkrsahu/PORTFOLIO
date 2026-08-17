@@ -9,7 +9,8 @@ export const initialProfile: UserProfile = {
   linkedinUrl: 'https://linkedin.com/in/ayush-kumar-sahu-dataengineer',
   githubUrl: 'https://github.com/Ayushsahu99',
   email: 'ayushkusahu@gmail.com',
-  pswVisaInfo: 'Authorized to work in the UK until November 2027 (Graduate Visa)'
+  pswVisaInfo: 'Authorized to work in the UK until November 2027 (Graduate Visa)',
+  avatarUrl: '/avatar.jpg'
 };
 
 export const skillsData: SkillItem[] = [
