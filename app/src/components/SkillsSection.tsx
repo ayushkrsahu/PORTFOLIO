@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, LineChart, Search, Workflow, Server, Table, Sparkles, Cpu, CheckCircle2, Layers } from 'lucide-react';
+import { Database, LineChart, Search, Workflow, Server, Table, Sparkles, Cpu, CheckCircle2, Layers, GitCompareArrows, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SkillItem } from '../types';
 import { TechIcon, getTechBrandInfo } from './TechIcon';
@@ -86,6 +86,18 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
         return (
           <div className={iconContainerStyle}>
             <Cpu className="w-8 h-8 stroke-[1.4]" />
+          </div>
+        );
+      case 'security':
+        return (
+          <div className={iconContainerStyle}>
+            <ShieldCheck className="w-8 h-8 stroke-[1.4]" />
+          </div>
+        );
+      case 'cdc':
+        return (
+          <div className={iconContainerStyle}>
+            <GitCompareArrows className="w-8 h-8 stroke-[1.4]" />
           </div>
         );
       case 'modeling':

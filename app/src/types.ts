@@ -27,7 +27,7 @@ export interface SkillItem {
   title: string;
   shortDesc: string;
   fullDesc: string;
-  iconName: 'cleansing' | 'visualization' | 'exploration' | 'pipeline' | 'warehouse' | 'modeling' | 'cdc' | 'ai' | 'infrastructure';
+  iconName: 'cleansing' | 'visualization' | 'exploration' | 'pipeline' | 'warehouse' | 'modeling' | 'cdc' | 'ai' | 'infrastructure' | 'security';
   tools: string[];
 }
 

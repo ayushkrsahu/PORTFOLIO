@@ -77,6 +77,14 @@ export const skillsData: SkillItem[] = [
     fullDesc: 'Building star schema semantic layers that make reporting straightforward, then publishing dashboards through the Power BI service with scheduled refresh. Focused on giving product and business teams a view of the numbers they can act on without asking an engineer first.',
     iconName: 'visualization',
     tools: ['Power BI', 'Power Query', 'SQL', 'Tableau', 'Excel']
+  },
+  {
+    id: 'skill-9',
+    title: 'Security & Data Governance',
+    shortDesc: 'Defence in depth across the pipeline, least privilege access, row level tenant isolation and retention aware handling of PII.',
+    fullDesc: 'Assessing a pipeline the way an auditor would, across the source database, the replication layer and the object store. Covers least privilege IAM and database roles, encryption in transit and at rest, network isolation and audit logging, plus the awkward findings that matter, such as captured deletes retaining source values in a data lake long after an erasure in the source system.',
+    iconName: 'security',
+    tools: ['AWS IAM', 'AWS KMS', 'VPC Isolation', 'Row Level Security', 'Audit Logging', 'PII Retention']
   }
 ];
 
@@ -87,7 +95,7 @@ export const experienceData: Experience[] = [
     location: 'Bhubaneswar, Odisha, India (On-site)',
     period: 'Jan 2026 to Present',
     summary:
-      'Data engineer on the NuCompass data warehouse modernisation. NuCompass runs corporate relocations, and their client HR teams never touch the internal systems, so everything reaches them through the CPC reporting portal. Reporting is the product surface here rather than a downstream extra. The business was running two source systems at once mid migration, a legacy on premises Back Office estate and the vendor hosted Service Engine platform, and the portal had to present one coherent view across both.',
+      'Data engineer on the NuCompass data warehouse modernisation. Their clients only ever see the CPC reporting portal, so reporting is the product rather than a downstream extra. Two source systems run side by side through the migration, a legacy on premises estate and the vendor hosted Service Engine platform, and the portal has to show one coherent view across both.',
     metrics: [
       { label: 'Service Engine tables navigated', value: '1,500+' },
       { label: 'Reports consolidated', value: '40 to 18' },
@@ -98,66 +106,52 @@ export const experienceData: Experience[] = [
       {
         area: 'Change Data Capture and Ingestion',
         points: [
-          'Built and demonstrated the CDC proof of concept before the team committed to the pattern. Stood up SQL Server locally, enabled CDC at database and table level, generated insert, update and delete activity, and exported the captured changes to Parquet in S3, reproducing the bronze layer end to end and surfacing the details that mattered at production scale.',
-          'The pipeline now replaces a nightly master stored procedure that rebuilt warehouse tables by full scanning the sources and got slower every month. AWS DMS reads the SQL Server transaction logs on both systems and lands only the actual changes in S3 as date partitioned Parquet, raw, immutable and replayable.',
-          'Built the Airflow loader on MWAA that moves bronze Parquet into RDS SQL Server staging, reading with pyarrow and writing with pyodbc using chunked fast_executemany batches. Watermarks make a re run safe, rows failing validation go to a quarantine table with the payload, reason and DAG run id rather than killing the load, and every row carries ingested_at, source_op, source_seq and dbt_run_id so any figure in a client report traces back to the CDC event that produced it.'
+          'Replaced a nightly stored procedure that rebuilt tables by full scanning the sources with AWS DMS log based capture, landing only real changes in S3 as partitioned Parquet. Delivered the proof of concept first to validate the pattern.',
+          'Built the Airflow loader on MWAA that moves that Parquet into RDS SQL Server staging. Watermarks make re runs safe, bad rows go to quarantine with a reason instead of killing the load, and lineage columns trace any reported figure back to its CDC event.'
         ]
       },
       {
         area: 'Warehouse Modelling in dbt',
         points: [
-          'Modelled a bronze, silver and gold medallion architecture in dbt. Silver deduplicates the multiple row versions CDC emits, conforms types and resolves business keys across the two source systems. Gold is a star schema of fact tables for expense, services, home sale cost and active transferee status, surrounded by conformed main, date and corporate client dimensions.',
-          'Pinned every gold column with dbt contracts, so schema drift fails the CI build instead of quietly breaking a client facing report.',
-          'Chose RDS SQL Server over a columnar warehouse deliberately. At roughly 10 GB of gold data, MPP would have been over engineering, and staying on SQL Server end to end avoided T-SQL translation from the sources and kept native MONEY and DATETIME2 handling. Because dbt sits between silver and gold, changing that engine later is a target change rather than a rewrite.'
+          'Modelled bronze, silver and gold in dbt. Silver deduplicates the row versions CDC emits and conforms business keys across both source systems; gold is a star schema of expense, services and transferee status facts with conformed dimensions.',
+          'Pinned every gold column with dbt contracts, so schema drift fails the build rather than quietly breaking a client report.',
+          'Chose RDS SQL Server over a columnar warehouse on purpose. At this scale MPP would be over engineering, and dbt sitting between silver and gold keeps that engine swappable later.'
         ]
       },
       {
         area: 'Discovery, Data Quality and Security',
         points: [
-          'The legacy estate had no current documentation and nobody who understood all of it, so I wrote a read only Python discovery tool with pyodbc and pandas that pulled table inventories ordered by row count, keys and constraints, foreign keys, object dependencies, procedure and view bodies, and samples with PII hashed. It ran with SELECT and NOLOCK against QA without blocking anyone, and became the input to the source to target column mapping.',
-          'Mapped Back Office columns to their Service Engine equivalents alongside the architecture lead, working through a transactional database of over 1,500 tables to find the handful that actually carry the business, and left behind an onboarding map so the next engineer does not repeat the discovery cost.',
-          'Root caused a long standing duplicate row defect in the active transferee status fact table. The three column key everyone assumed was unique was not, because a transferee can legitimately have several household goods shipments with different load dates. The duplication came from the upstream source view, not the load logic where the team had been looking. I worked all ten affected cases, separated genuine rescheduled moves from true double entries, and escalated the fix as a business decision on table grain rather than deciding it unilaterally.',
-          'Documented a class of bug in the legacy incremental load where null lookup columns broke source to destination comparisons silently, since in SQL a null never equals a null, and derived stand in values so inserts, updates and deletes resolved correctly.',
-          'Authored the security assessment for the DMS CDC pipeline as defence in depth across three trust zones, covering least privilege IAM and database roles, KMS encryption in transit and at rest, VPC isolation, bucket hardening and audit logging. The finding that drove most discussion: DMS writes deletes as tagged records that retain the original row values, so an erasure satisfied in the source database is not satisfied in the lake, which matters directly for transferee PII under a multi year retention policy. I documented the remediation path alongside it.'
+          'Wrote a read only Python discovery tool that turned an undocumented legacy estate into table inventories, dependency graphs, key constraints and procedure bodies. It became the input to the source to target column mapping across a 1,500 table database.',
+          'Root caused a long standing duplicate row defect to an incorrect grain assumption upstream, not the load logic everyone was debugging, and escalated the fix as a business decision on table grain rather than deciding it alone.',
+          'Authored the security assessment for the CDC pipeline across three trust zones. The finding that mattered most: captured deletes retain the original row values in S3, so an erasure in the source database is not an erasure in the lake.'
         ]
       },
       {
-        area: 'Serving Layer and Reporting',
+        area: 'Serving, Reporting and Delivery',
         points: [
-          'Cube.dev sits in front of gold holding pre aggregations in S3, so dashboard queries hit a cache rather than the warehouse, and enforces row level security by corporate client id so no client can ever see another client\'s transferees.',
-          'The portal consumes that through two channels, Power BI Embedded for visual reports and native Angular data grids for dense tabular reports that need custom row actions. I documented the split and the reasoning behind it.',
-          'Worked the report inventory down from roughly 40 fragmented legacy reports to a Phase 1 set of 18, consolidating where separate visuals answered overlapping questions and chasing down the ones that could not be located in the workspaces.'
-        ]
-      },
-      {
-        area: 'Platform Engineering and Delivery',
-        points: [
-          'Provisioned AWS infrastructure as code with Terraform and CloudFormation, covering networking, compute, RDS, S3 and the IAM roles around them, with remote state so the team can work on it together safely.',
-          'Automated delivery through GitHub Actions, running security scanning, tests and linting on every pull request before building Docker images and rolling deployments forward.',
-          'Supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure, working through the provisioning, configuration and release steps a government hosted environment requires.',
-          'Worked under genuine governance rather than a sandbox: read only by default until explicitly authorised, all DDL and view definitions in source control first, and no vendor schema exposed to third party tooling, so AI assisted work ran against dummy schemas and synthetic data only.'
+          'Cube.dev sits in front of gold with pre aggregations in S3 and row level security by corporate client, so dashboards hit a cache and no client can see another client\'s data. The portal consumes it through Power BI Embedded and Angular data grids.',
+          'Consolidated roughly 40 fragmented legacy reports into a Phase 1 set of 18.',
+          'Provisioned AWS infrastructure as code with Terraform and CloudFormation, automated delivery through GitHub Actions, and supported the AIIMS Meghraj deployment onto NIC cloud infrastructure.'
         ]
       },
       {
         area: 'Designed and In Delivery',
         points: [
-          'Historical migration and cutover from Back Office into Service Engine through the vendor import tool, where the real complexity is that active and historic data need different handling per client and several clients have already partially migrated. Getting those rules explicit is what prevents duplicate transferee records at cutover.',
-          'Decommissioning the legacy transactional databases, the old warehouse and the legacy Power BI estate, running both stacks in parallel and reconciling report level output before the portal switches over.',
-          'Ask NCM, a LangGraph agent over the gold star schema that lets a mobility manager ask for at risk transferees or pending approvals in plain English. It queries through Cube.dev rather than the warehouse directly, so the same row level security that protects the dashboards protects the agent and no client can prompt their way into another client\'s data.',
-          'Moving the reporting layer off Power BI import mode to remove the 15 to 20 second client facing load times, and tightening freshness from the legacy nightly batch toward near real time on the CDC stream.'
+          'Historical cutover from the legacy estate into Service Engine, where the real work is making the per client migration rules explicit so transferees are not duplicated.',
+          'Ask NCM, a LangGraph agent over the gold schema that answers questions in plain English. It queries through Cube.dev, so the same row level security that protects the dashboards protects the agent.',
+          'Decommissioning the legacy stack after parallel running, and moving reporting off import mode to cut the current 15 to 20 second load times.'
         ]
       }
     ],
     description: [
-      'Data engineer on the NuCompass data warehouse modernisation, feeding a client facing relocation reporting portal from two source systems running at once during a platform migration.',
+      'Data engineer on the NuCompass data warehouse modernisation, feeding a client facing relocation reporting portal from two source systems running side by side through a platform migration.',
       'Engineered a change data capture pipeline replacing a nightly full scan stored procedure, streaming SQL Server changes through AWS DMS into an S3 Parquet bronze layer.',
-      'Built the Airflow loader on MWAA moving partitioned Parquet from S3 into RDS SQL Server staging, with watermark based idempotency, a row level quarantine path, chunked bulk inserts via fast_executemany, and lineage columns that trace any reported figure back to its CDC event.',
+      'Built the Airflow loader on MWAA moving partitioned Parquet from S3 into RDS SQL Server staging, with watermark based idempotency, a row level quarantine path, and lineage columns that trace any reported figure back to its CDC event.',
       'Modelled a bronze, silver and gold medallion architecture in dbt terminating in a star schema, with dbt contracts failing CI on any gold schema drift.',
-      'Delivered the CDC proof of concept that validated the pattern before the team committed to it, covering partition layout, Parquet schema stability and operation handling.',
-      'Authored a defence in depth security assessment of the DMS CDC pipeline across three trust zones, and identified that CDC captured deletes retain source row values in S3, with direct data retention and privacy consequences.',
-      'Wrote a read only Python discovery tool that reverse engineered an undocumented legacy estate into table inventories, dependency graphs, key constraints and procedure bodies, forming the input to the source to target column mapping across a 1,500 table target database.',
+      'Authored a defence in depth security assessment of the DMS CDC pipeline, and identified that CDC captured deletes retain source row values in S3, with direct data retention and privacy consequences.',
+      'Wrote a read only Python discovery tool that reverse engineered an undocumented legacy estate, forming the input to the source to target column mapping across a 1,500 table database.',
       'Root caused a duplicate row defect in a warehouse fact table to an incorrect grain assumption in the upstream source view, and escalated the fix as a business decision on table grain.',
-      'Consolidated roughly 40 fragmented legacy reports into a Phase 1 set of 18 across Power BI Embedded and native Angular data grids, served through Cube.dev pre aggregations with row level security by corporate client.',
+      'Consolidated roughly 40 fragmented legacy reports into a Phase 1 set of 18 across Power BI Embedded and native Angular data grids, served through Cube.dev with row level security by corporate client.',
       'Provisioned AWS infrastructure as code with Terraform and CloudFormation, automated delivery through GitHub Actions, and supported the deployment of the AIIMS Meghraj platform onto NIC cloud infrastructure.'
     ],
     technologies: [
@@ -170,7 +164,6 @@ export const experienceData: Experience[] = [
       'Python',
       'pyarrow',
       'pyodbc',
-      'pandas',
       'Parquet',
       'T-SQL',
       'Cube.dev',
@@ -179,9 +172,7 @@ export const experienceData: Experience[] = [
       'LangGraph',
       'Terraform',
       'AWS CloudFormation',
-      'Docker',
       'GitHub Actions',
-      'AWS KMS',
       'AWS IAM'
     ]
   },
@@ -191,7 +182,7 @@ export const experienceData: Experience[] = [
     location: 'Gurugram, India',
     period: 'Jan 2023 to Aug 2024',
     summary:
-      'I looked after the data pipelines and the analytics layer behind a Delhi NCR diagnostics marketplace covering three cities and more than 25 diagnostic tests. Hospitals and diagnostic centres were our clients, so alongside the engineering I spent time in front of them, visiting centres to pitch the platform and bring them onto it.',
+      'Owned the pipelines and analytics behind a Delhi NCR diagnostics marketplace covering three cities and more than 25 tests. Hospitals and diagnostic centres were the clients, so alongside the engineering I visited them to pitch the platform and bring them on board.',
     metrics: [
       { label: 'Cities served', value: '3' },
       { label: 'Diagnostic tests', value: '25+' },
@@ -200,34 +191,33 @@ export const experienceData: Experience[] = [
     ],
     highlights: [
       {
-        area: 'Pipelines and Orchestration',
+        area: 'Pipelines and Platform',
         points: [
-          'Built the Python and SQL ETL and ELT that pulled test catalogues, pricing and slot availability in from partner centres and standardised them, since every centre named and priced the same test differently.',
-          'Orchestrated the ingestion in Apache Airflow with scheduling, monitoring and automatic retries, so pricing and availability stayed current across partner centres without anyone chasing it manually.'
+          'Built the Python and SQL ETL that pulled test catalogues, pricing and slot availability from partner centres and standardised them, since every centre named and priced the same test differently.',
+          'Orchestrated ingestion in Apache Airflow with scheduling, monitoring and automatic retries, and built the platform on AWS with S3 as the data lake and Redshift as the warehouse, giving product and business teams a view of bookings, conversions and centre performance.'
         ]
       },
       {
-        area: 'Data Modelling and Platform',
+        area: 'Modelling and Data Quality',
         points: [
-          'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across seven service categories, MRI, CT, X-ray, ultrasound, blood tests, cardiology and neurology, and three empanelment types, CGHS, ECHS and corporate.',
-          'Built the platform on AWS with S3 as the data lake and Amazon Redshift as the warehouse, which gave the product and business teams a clear view of bookings, conversions, best selling tests and how each centre was performing.'
+          'Modelled the marketplace schema across centres, services, pricing, panels and bookings, covering seven service categories and three empanelment types.',
+          'Implemented the validation behind the price comparison experience advertising savings of up to 50 percent, which also supported search and near me discovery.'
         ]
       },
       {
-        area: 'Client Engagement and Product Impact',
+        area: 'Client Engagement',
         points: [
-          'Went out to hospitals and diagnostic centres in person to pitch the platform and bring them on board, then worked with them on getting their catalogue and pricing data into a shape we could ingest. Sitting on both sides of that conversation made the onboarding pipeline considerably easier to design.',
-          'Implemented the data quality and validation checks behind the price comparison experience that advertised savings of up to 50 percent, which also supported search, near me discovery and same day report delivery.'
+          'Went out to hospitals and diagnostic centres in person to pitch the platform and onboard them, then worked with them to get their catalogue and pricing data into a shape we could ingest. Sitting on both sides of that conversation made the onboarding pipeline much easier to design.'
         ]
       }
     ],
     description: [
-      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL and ELT that standardised test catalogues, pricing and slot availability from partner centres.',
+      'Owned the data pipelines and analytics layer behind a Delhi NCR diagnostics marketplace spanning 3 cities and 25+ diagnostic tests, building Python and SQL ETL that standardised test catalogues, pricing and slot availability from partner centres.',
       'Visited hospitals and diagnostic centres in person to pitch the platform and onboard them as clients, then shaped their catalogue and pricing data into a form the ingestion pipeline could consume.',
-      'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories and 3 empanelment types, CGHS, ECHS and corporate.',
-      'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current across partner centres.',
+      'Modelled the marketplace schema covering centres, services, pricing, panels and bookings across 7 service categories and 3 empanelment types.',
+      'Orchestrated ingestion with Apache Airflow, designing DAGs with scheduling, monitoring and automated retries so pricing and slot availability stayed current.',
       'Built an AWS platform with S3 as the data lake and Amazon Redshift as the warehouse, giving product and business teams visibility into bookings, conversions, top tests and centre performance.',
-      'Implemented data quality and validation checks behind a price comparison experience advertising savings of up to 50 percent, supporting search, near me discovery and same day report delivery.'
+      'Implemented data quality and validation checks behind a price comparison experience advertising savings of up to 50 percent.'
     ],
     technologies: [
       'Python',
@@ -238,8 +228,7 @@ export const experienceData: Experience[] = [
       'PostgreSQL',
       'ETL / ELT',
       'Dimensional Modelling',
-      'Data Quality',
-      'AWS'
+      'Data Quality'
     ]
   }
 ];

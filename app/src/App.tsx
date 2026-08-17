@@ -108,14 +108,14 @@ export default function App() {
         onScrollToCertifications={handleScrollToCertifications}
       />
 
-      {/* 5. Dedicated Spacious Certifications & Credentials Section */}
+      {/* 5. "My skills" Section */}
+      <SkillsSection skills={skillsData} />
+
+      {/* 6. Dedicated Spacious Certifications & Credentials Section */}
       <CertificationsSection
         certifications={certificationsData}
         onOpenWindow={handleOpenCertificationsWindow}
       />
-
-      {/* 6. "My skills" Section */}
-      <SkillsSection skills={skillsData} />
 
       {/* 7. Filterable Projects Showcase (13 Real Projects) */}
       <ProjectsSection
