@@ -46,7 +46,7 @@ export const BannerImage: React.FC<BannerImageProps> = ({ profile }) => {
                   <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Available for opportunities" />
                 </div>
                 <div className="text-[11px] text-sky-200 font-mono">
-                  {profile.role} • {profile.location} ({profile.pswVisaInfo})
+                  {profile.role} • {profile.location} • {profile.pswVisaInfo}
                 </div>
               </div>
             </div>
