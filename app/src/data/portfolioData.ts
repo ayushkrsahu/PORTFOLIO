@@ -249,7 +249,7 @@ export const educationData: Education[] = [
     institution: 'Queen Mary University of London',
     degree: 'MSc Big Data Science',
     grade: 'Distinction',
-    period: 'Sep 2024 to Sep 2025',
+    period: '2024 to 2025',
     description:
       'Russell Group. Modules covered Big Data Processing, Cloud Computing, Neural Networks, Natural Language Processing and Machine Learning.'
   },
@@ -257,7 +257,7 @@ export const educationData: Education[] = [
     institution: 'SRM Institute of Science and Technology, Chennai',
     degree: 'B.Tech Electronics and Communication',
     grade: 'First Class',
-    period: 'May 2019 to Dec 2023'
+    period: '2019 to 2023'
   }
 ];
 
