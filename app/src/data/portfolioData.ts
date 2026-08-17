@@ -6,9 +6,9 @@ export const initialProfile: UserProfile = {
   location: 'Bhubaneswar, Odisha, India',
   bio: 'Senior Data Engineer at ByteIQ Analytics with an MSc in Big Data Science from Queen Mary University of London. I build the plumbing that gets data out of messy source systems and into warehouses people can actually trust, which in practice means change data capture off SQL Server through AWS DMS, orchestration in Airflow, modelling in dbt, and the AWS infrastructure underneath it defined as code. Most of my current work is a warehouse modernisation for a corporate relocation business, where a client facing reporting portal has to present one coherent view while two source systems run side by side through a migration.',
   tagline: 'MSc Big Data Science, Distinction (Queen Mary University of London) · CDC, Airflow, dbt and AWS',
-  linkedinUrl: 'https://linkedin.com/in/ayush-kumar-sahu-dataengineer',
-  githubUrl: 'https://github.com/Ayushsahu99',
-  email: 'ayushkusahu@gmail.com',
+  linkedinUrl: 'https://www.linkedin.com/in/ayush-ku-sahu',
+  githubUrl: 'https://github.com/ayushkrsahu',
+  email: 'ayushkusahuk@gmail.com',
   pswVisaInfo: 'Authorized to work in the UK until November 2027 (Graduate Visa)',
   avatarUrl: '/avatar.jpg'
 };
@@ -84,7 +84,7 @@ export const experienceData: Experience[] = [
   {
     role: 'Senior Data Engineer',
     company: 'ByteIQ Analytics',
-    location: 'Bhubaneswar, Odisha, India (Hybrid)',
+    location: 'Bhubaneswar, Odisha, India (On-site)',
     period: 'Jan 2026 to Present',
     summary:
       'Data engineer on the NuCompass data warehouse modernisation. NuCompass runs corporate relocations, and their client HR teams never touch the internal systems, so everything reaches them through the CPC reporting portal. Reporting is the product surface here rather than a downstream extra. The business was running two source systems at once mid migration, a legacy on premises Back Office estate and the vendor hosted Service Engine platform, and the portal had to present one coherent view across both.',
@@ -256,9 +256,8 @@ export const educationData: Education[] = [
   {
     institution: 'SRM Institute of Science and Technology, Chennai',
     degree: 'B.Tech Electronics and Communication',
-    grade: '7.61 / 10',
-    period: 'May 2019 to Dec 2023',
-    description: 'First Class.'
+    grade: 'First Class',
+    period: 'May 2019 to Dec 2023'
   }
 ];
 
@@ -410,130 +409,246 @@ export const certificationsData: Certification[] = [
 export const projectsData: Project[] = [
   {
     id: 'project-1',
-    title: 'Enterprise Lakehouse on Azure Databricks',
+    title: 'End to End Databricks Pipeline (Flight Data)',
     category: 'data-engineering',
-    categoryLabel: 'Lakehouse & PySpark',
-    shortDescription: 'Enterprise Lakehouse implementing Medallion Architecture across Bronze, Silver, and Gold delta layers with 20M+ records.',
-    fullDescription: 'Architected a modern data platform on Azure Databricks. Ingests raw streaming and batch feeds into Bronze tables, sanitizes and merges records in Silver layers with PySpark, and exposes aggregated dimensional models in Gold tables for Power BI reporting.',
+    categoryLabel: 'Databricks & Delta Lake',
+    shortDescription: 'Medallion architecture lakehouse for flight, passenger and airport data, built to survive the schema changes airlines keep making.',
+    fullDescription: 'Flight data is volatile: airlines add fields and change formats without warning, and a standard ETL pipeline crashes the moment it sees an unexpected column. I built a resilient ingestion framework on Databricks using Auto Loader that detects schema changes and evolves the target Delta table instead of breaking, capturing anything unexpected in a rescue column for later inspection. Slowly Changing Dimension Type 2 logic through Delta MERGE tracks the full history of a flight status rather than overwriting the latest state.',
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80',
-    tags: ['Azure Databricks', 'Delta Lake', 'PySpark', 'ADLS Gen2', 'Azure Data Factory'],
+    tags: ['Databricks', 'PySpark', 'Delta Lake', 'Auto Loader', 'dbt'],
     metrics: [
-      { label: 'Ingestion Scale', value: '20M+ rows' },
-      { label: 'ETL Speedup', value: '38% faster' },
-      { label: 'Uptime', value: '99.8%' }
+      { label: 'Gold query performance', value: '+40%' },
+      { label: 'Layers', value: 'Bronze to Gold' }
     ],
     keyFeatures: [
-      'Medallion Architecture (Bronze -> Silver -> Gold)',
-      'ACID transactional consistency with Delta Lake',
-      'Automated schema drift detection and quarantine'
+      'Auto Loader ingestion with automatic schema evolution and a rescue column for bad data',
+      'SCD Type 2 history tracking through Delta Lake MERGE',
+      'Z-Ordering on high cardinality columns for file skipping on the gold layer',
+      'Gold star schema with fact_bookings and supporting dimensions'
     ],
-    architecture: ['Azure Blob -> ADF -> Databricks Spark -> Delta Lake -> Power BI Mart'],
-    externalUrl: 'https://github.com/Ayushsahu99'
+    architecture: ['Raw files -> Auto Loader -> Bronze Delta -> Silver dedup -> Gold star schema'],
+    externalUrl: 'https://github.com/ayushkrsahu/Databricks_end_to_end_flights'
   },
   {
     id: 'project-2',
-    title: 'Autonomous Multi-Agent Market Analyst',
+    title: 'BrandGuardian, Multimodal AI Compliance Agent',
     category: 'ai-engineering',
-    categoryLabel: 'Agentic AI & LangGraph',
-    shortDescription: 'Cooperative multi-agent system utilizing LangGraph and Claude 3.5 Sonnet to perform real-time market sentiment analysis and web scraping.',
-    fullDescription: 'Engineered an autonomous research team powered by LangGraph. Distinct specialized agents collaborate: a Scraper Agent pulls financial news, an Analyzer Agent scores sentiment, and a Synthesizer Agent writes structured executive briefs with citations.',
+    categoryLabel: 'LangGraph & Azure OpenAI',
+    shortDescription: 'Multi agent LangGraph workflow that watches video content and flags compliance issues, served behind FastAPI.',
+    fullDescription: 'A multi agent LangGraph workflow that ingests YouTube videos, extracts transcripts and on screen text with Azure Video Indexer, and flags compliance issues using GPT-4o with retrieval augmented generation. Exposed through a FastAPI endpoint with LLM observability wired in so agent decisions can be inspected rather than taken on trust.',
     image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
-    tags: ['LangGraph', 'LangChain', 'Python', 'FastAPI', 'Claude API', 'ChromaDB'],
-    metrics: [
-      { label: 'Agent Coordination', value: '4 Sub-Agents' },
-      { label: 'Synthesis Latency', value: '< 2.4s' },
-      { label: 'Accuracy', value: '96.2%' }
-    ],
+    tags: ['LangGraph', 'Azure OpenAI', 'Azure Video Indexer', 'FastAPI', 'RAG'],
+    metrics: [],
     keyFeatures: [
-      'Multi-Agent orchestration with state graph checkpoints',
-      'Hybrid dense-sparse vector search in ChromaDB',
-      'Human-in-the-loop validation checkpoints'
+      'Multi agent graph coordinating ingestion, extraction and compliance review',
+      'Transcript and on screen text extraction through Azure Video Indexer',
+      'GPT-4o retrieval augmented compliance checks against a policy corpus',
+      'FastAPI service layer with LLM observability'
     ],
-    externalUrl: 'https://github.com/Ayushsahu99'
+    architecture: ['YouTube ingest -> Video Indexer -> LangGraph agents -> GPT-4o RAG -> FastAPI'],
+    externalUrl: 'https://github.com/ayushkrsahu/BrandGuardian-LangGraph-Azure-AI',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_aiengineering-langgraph-azureopenai-ugcPost-7433119063628750848-rvjm'
   },
   {
     id: 'project-3',
-    title: 'Automated ADF Cloud Migration Engine',
+    title: 'Real Time Stock Market Data Pipeline',
     category: 'data-engineering',
-    categoryLabel: 'Cloud ETL & SQL',
-    shortDescription: 'Orchestrated 25+ cloud data integration pipelines migrating on-premises legacy databases to Azure SQL and Snowflake.',
-    fullDescription: 'Constructed an automated migration utility leveraging Azure Data Factory parameterized templates and PowerShell scripts. Implemented incremental change-data-capture (CDC) with automated rollback triggers.',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
-    tags: ['Azure Data Factory', 'Azure SQL', 'Blob Storage', 'PowerShell', 'Python'],
+    categoryLabel: 'Kafka & Snowflake',
+    shortDescription: 'Low latency streaming pipeline taking market data from daily batch to near real time for volatility tracking.',
+    fullDescription: 'Batch processing once a day is useless for tracking market volatility, so I architected a low latency streaming pipeline instead. A multi node Kafka cluster ingests high velocity stock data from the Finnhub API, and Spark Structured Streaming processes the streams with windowed aggregations and out of order event handling. Raw data lands in a MinIO data lake for historical replay while Snowflake receives it through internal stages for immediate SQL access, with dbt running quality tests and modelling silver and gold layers.',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+    tags: ['Apache Kafka', 'Spark Structured Streaming', 'Snowflake', 'Airflow', 'dbt', 'Docker'],
     metrics: [
-      { label: 'Migrated Tables', value: '25+ Pipelines' },
-      { label: 'Data Integrity', value: '100% Verified' },
-      { label: 'Downtime', value: '0 hrs' }
+      { label: 'Data latency', value: '24h to near real time' }
     ],
     keyFeatures: [
-      'Parameterized pipeline templates',
-      'Incremental high-watermark CDC loading',
-      'Automated email & Teams alerting'
+      'Multi node Kafka cluster ingesting the Finnhub API',
+      'Spark Structured Streaming with windowing and out of order event handling',
+      'MinIO data lake for replay alongside Snowflake for immediate SQL access',
+      'dbt tests for nulls and duplicates feeding live Power BI dashboards'
     ],
-    externalUrl: 'https://github.com/Ayushsahu99'
+    architecture: ['Finnhub API -> Kafka -> Spark Streaming -> MinIO + Snowflake -> dbt -> Power BI'],
+    externalUrl: 'https://github.com/ayushkrsahu/real_time_stock_analysis_with_data_engineering',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataengineering-apachekafka-snowflake-activity-7402961976290869248-kDjR'
   },
   {
     id: 'project-4',
-    title: 'Financial Portfolio Intelligence Suite',
-    category: 'data-analytics',
-    categoryLabel: 'Power BI & Advanced DAX',
-    shortDescription: 'Production Power BI analytical dashboard tracking asset allocations, Sharpe ratios, and market volatility indicators.',
-    fullDescription: 'Designed an interactive analytics suite for investment portfolios. Modeled star-schema tables, wrote complex DAX time-intelligence calculations, and built responsive visual scorecards for executive stakeholders.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
-    tags: ['Power BI', 'DAX', 'Power Query', 'SQL Server', 'Financial Modeling'],
-    metrics: [
-      { label: 'AUM Tracked', value: '$45M+' },
-      { label: 'Custom Measures', value: '60+ DAX' },
-      { label: 'Refresh Cycle', value: 'Automated' }
-    ],
+    title: 'Azure AI and Retrieval Augmented Generation',
+    category: 'ai-engineering',
+    categoryLabel: 'Azure AI & RAG',
+    shortDescription: 'Retrieval augmented generation on Azure, covering document indexing, grounded answering and evaluation.',
+    fullDescription: 'Work on retrieval augmented generation using Azure AI services, covering how documents are chunked and indexed, how retrieval is grounded so answers cite their source rather than hallucinate, and how the results are evaluated. Written up in full on LinkedIn with the architecture and the reasoning behind each choice.',
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+    tags: ['Azure AI', 'RAG', 'Vector Search', 'Python', 'LLM'],
+    metrics: [],
     keyFeatures: [
-      'Dynamic scenario simulation parameters',
-      'Risk-adjusted return & Sharpe metrics',
-      'Row-level security (RLS) for client portals'
+      'Document chunking and vector indexing strategy',
+      'Grounded retrieval so answers trace back to source passages',
+      'Evaluation of retrieval quality rather than eyeballing outputs'
     ],
-    externalUrl: 'https://github.com/Ayushsahu99'
+    externalUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_azure-artificialintelligence-rag-ugcPost-7432723235227648000-z7t6',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_azure-artificialintelligence-rag-ugcPost-7432723235227648000-z7t6'
   },
   {
     id: 'project-5',
-    title: 'Enterprise RAG Document Q&A Assistant',
-    category: 'ai-engineering',
-    categoryLabel: 'RAG & Vector Search',
-    shortDescription: 'Semantic document search pipeline with hybrid vector retrieval, metadata filtering, and hallucination guardrails.',
-    fullDescription: 'Built an enterprise knowledge assistant allowing employees to query internal technical documentation. Implemented chunking with semantic boundaries, cross-encoder rerankers, and citation verification.',
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80',
-    tags: ['Python', 'Pinecone', 'OpenAI / Gemini', 'LangChain', 'FastAPI', 'Streamlit'],
-    metrics: [
-      { label: 'Corpus Size', value: '10k+ Docs' },
-      { label: 'Recall @ 5', value: '94.8%' },
-      { label: 'P95 Latency', value: '820ms' }
-    ],
+    title: 'Data Engineering and DevOps on AWS',
+    category: 'data-engineering',
+    categoryLabel: 'Terraform & CI/CD',
+    shortDescription: 'Infrastructure as code and an automated delivery pipeline for a data platform on AWS.',
+    fullDescription: 'An open source mirror of the DevOps modernisation pattern I work with professionally. Terraform provisions the AWS resources including S3, Glue databases and crawlers, and the IAM roles that tie them together, while GitHub Actions runs a multi stage pipeline of security scanning, tests, validation, plan and deploy. The point is production parity: environments come up identically in minutes instead of drifting apart through manual provisioning.',
+    image: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?auto=format&fit=crop&w=800&q=80',
+    tags: ['Terraform', 'AWS Glue', 'Amazon S3', 'GitHub Actions', 'Python', 'PyTest'],
+    metrics: [],
     keyFeatures: [
-      'Hybrid dense & sparse BM25 retrieval',
-      'Hallucination prevention with fact verification',
-      'Source-cited inline references'
+      'Modular Terraform for S3, Glue and IAM with remote state',
+      'GitHub Actions stages for security scan, test, validate, plan and deploy',
+      'Bandit security scanning and PyTest coverage gating the pipeline',
+      'Data cataloguing through AWS Glue crawlers'
     ],
-    externalUrl: 'https://github.com/Ayushsahu99'
+    architecture: ['GitHub Actions -> Terraform -> S3 + Glue + IAM -> catalogued data'],
+    externalUrl: 'https://github.com/ayushkrsahu/DevOpsDEAutomation',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataengineering-devops-aws-activity-7428611522131800064--ajn'
   },
   {
     id: 'project-6',
-    title: 'Real-Time IoT Telemetry Stream Processor',
+    title: 'Data Engineering with Databricks and Spark',
     category: 'data-engineering',
-    categoryLabel: 'Streaming & Kafka',
-    shortDescription: 'Stream processing pipeline consuming high-velocity sensor telemetry with Spark Structured Streaming into partitioned Parquet sinks.',
-    fullDescription: 'Engineered an event-driven telemetry processor using Apache Kafka and PySpark Structured Streaming. Calculates tumbling-window statistics over sliding 5-minute intervals and writes partitioned datasets to object storage.',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-    tags: ['PySpark', 'Structured Streaming', 'Kafka', 'Docker', 'PostgreSQL'],
-    metrics: [
-      { label: 'Event Throughput', value: '15k msgs/sec' },
-      { label: 'End-to-End Latency', value: '< 1.2s' },
-      { label: 'Availability', value: '99.9%' }
-    ],
+    categoryLabel: 'Databricks & PySpark',
+    shortDescription: 'Distributed processing work on Databricks, covering PySpark transformations and Delta Lake optimisation.',
+    fullDescription: 'Hands on distributed processing with Databricks and Spark: writing PySpark transformations that scale across a cluster, understanding where shuffles and skew hurt, and using Delta Lake features such as ACID transactions and file compaction to keep query performance predictable as tables grow.',
+    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80',
+    tags: ['Databricks', 'Apache Spark', 'PySpark', 'Delta Lake', 'Spark SQL'],
+    metrics: [],
     keyFeatures: [
-      'Watermarking for late-arriving telemetry',
-      'Snappy-compressed partitioned Parquet output',
-      'Dead-letter queue for malformed JSON payloads'
+      'PySpark transformations designed around partitioning and shuffle cost',
+      'Delta Lake ACID transactions and file compaction',
+      'Spark SQL for analytical workloads on the cluster'
     ],
-    externalUrl: 'https://github.com/Ayushsahu99'
+    externalUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataengineering-databricks-spark-activity-7426599481413926912-GAwy',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataengineering-databricks-spark-activity-7426599481413926912-GAwy'
+  },
+  {
+    id: 'project-7',
+    title: 'Data Engineering First Principles in Python',
+    category: 'data-engineering',
+    categoryLabel: 'Python Fundamentals',
+    shortDescription: 'Building the core pieces of a data pipeline from scratch in Python, rather than reaching for a framework.',
+    fullDescription: 'Working through the fundamentals of data engineering by writing them from scratch in Python: extraction, incremental loading, idempotency, batching and error handling, without hiding behind a framework. The point of the exercise is that when a managed tool misbehaves later, you understand what it was doing on your behalf.',
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+    tags: ['Python', 'ETL', 'Idempotency', 'Batching', 'SQL'],
+    metrics: [],
+    keyFeatures: [
+      'Extraction and incremental loading written from first principles',
+      'Idempotent load patterns and watermarking',
+      'Error handling and retry semantics without a framework'
+    ],
+    externalUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataengineering-firstprinciples-python-activity-7430408372828454912-UhoQ',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataengineering-firstprinciples-python-activity-7430408372828454912-UhoQ'
+  },
+  {
+    id: 'project-8',
+    title: 'Vendor Performance Analytics',
+    category: 'data-analytics',
+    categoryLabel: 'Analytics & Reporting',
+    shortDescription: 'Analysis of vendor performance covering spend, delivery reliability and where the supplier base carries risk.',
+    fullDescription: 'An end to end analysis of vendor performance, cleaning and modelling the underlying data before reporting on spend concentration, delivery reliability and the suppliers that represent the most operational risk. The interesting part is less the charts and more deciding which comparisons are actually fair given uneven order volumes.',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+    tags: ['Python', 'SQL', 'Power BI', 'Data Cleaning', 'EDA'],
+    metrics: [],
+    keyFeatures: [
+      'Data cleaning and modelling ahead of any reporting',
+      'Spend concentration and delivery reliability analysis',
+      'Fair comparison across vendors with uneven order volumes'
+    ],
+    externalUrl: 'https://github.com/ayushkrsahu/Vendor-data-analysis',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_vendor-data-analysis-i-recently-completed-activity-7396481664593362944-YkX5'
+  },
+  {
+    id: 'project-9',
+    title: 'Telecom Strategy Analytics',
+    category: 'data-analytics',
+    categoryLabel: 'Power Query & Power BI',
+    shortDescription: 'Telecom customer and revenue analysis built on a cleaned Power Query model feeding Power BI.',
+    fullDescription: 'Analysis of telecom customer and revenue data, with most of the work sitting in Power Query getting a messy source into a shape worth reporting on, then modelling it so the Power BI layer stays simple. Covers customer segments, revenue contribution and where churn risk concentrates.',
+    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80',
+    tags: ['Power BI', 'Power Query', 'Data Modeling', 'Telecom Analytics'],
+    metrics: [],
+    keyFeatures: [
+      'Power Query transformations handling a messy source',
+      'Customer segmentation and revenue contribution analysis',
+      'Churn risk concentration across segments'
+    ],
+    externalUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalytics-telecomstrategy-powerquery-activity-7398515931225812992-oFvI',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalytics-telecomstrategy-powerquery-activity-7398515931225812992-oFvI'
+  },
+  {
+    id: 'project-10',
+    title: 'Business Intelligence Dashboard',
+    category: 'data-analytics',
+    categoryLabel: 'Power BI',
+    shortDescription: 'Enterprise KPI dashboard tracking performance trends and core business metrics, published live.',
+    fullDescription: 'A Power BI reporting suite tracking enterprise KPIs, performance trends and core business metrics on a star schema semantic layer, published through the Power BI service so stakeholders can explore it without asking an analyst first.',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+    tags: ['Power BI', 'Data Modeling', 'Business Intelligence', 'SQL'],
+    metrics: [],
+    keyFeatures: [
+      'Star schema semantic layer behind the report',
+      'Enterprise KPI and performance trend tracking',
+      'Published live through the Power BI service'
+    ],
+    externalUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalytics-powerbi-businessintelligence-activity-7400807941794365440-6KlT',
+    linkedInPostUrl: 'https://www.linkedin.com/posts/ayush-ku-sahu_dataanalytics-powerbi-businessintelligence-activity-7400807941794365440-6KlT'
+  },
+  {
+    id: 'project-11',
+    title: 'E-Commerce Inventory Analytics',
+    category: 'data-analytics',
+    categoryLabel: 'Inventory & Demand',
+    shortDescription: 'Inventory analysis covering stock movement, demand patterns and where capital sits idle on the shelf.',
+    fullDescription: 'Analysis of e-commerce inventory covering stock movement, demand patterns and the products where working capital sits idle. Combines sales velocity with holding levels so slow movers and stockout risk both surface from the same model.',
+    image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80',
+    tags: ['Python', 'SQL', 'Pandas', 'Inventory Analytics'],
+    metrics: [],
+    keyFeatures: [
+      'Stock movement and sales velocity analysis',
+      'Slow moving inventory and idle capital identification',
+      'Stockout risk surfaced from the same model'
+    ],
+    externalUrl: 'https://github.com/ayushkrsahu/E-Commerce-Inventory-Analytics'
+  },
+  {
+    id: 'project-12',
+    title: 'Customer Shopping Analysis',
+    category: 'data-analytics',
+    categoryLabel: 'Customer Behaviour',
+    shortDescription: 'Customer behaviour analysis across purchase patterns, segments and category preference.',
+    fullDescription: 'Exploratory analysis of customer shopping behaviour, segmenting customers by purchase pattern and value, and looking at how category preference and basket composition differ between those segments.',
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80',
+    tags: ['Python', 'Pandas', 'EDA', 'Segmentation', 'Visualisation'],
+    metrics: [],
+    keyFeatures: [
+      'Customer segmentation by purchase pattern and value',
+      'Category preference and basket composition by segment',
+      'Exploratory analysis with statistical profiling'
+    ],
+    externalUrl: 'https://github.com/ayushkrsahu/customer_shopping_anlyasis'
+  },
+  {
+    id: 'project-13',
+    title: 'HealthEdgeAI',
+    category: 'machine-learning',
+    categoryLabel: 'Machine Learning',
+    shortDescription: 'Machine learning applied to healthcare data, from feature preparation through to model evaluation.',
+    fullDescription: 'A machine learning project on healthcare data, covering the preparation work that decides whether a model is worth anything, feature engineering, and evaluation with attention to the class imbalance that healthcare datasets almost always carry.',
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
+    tags: ['Python', 'Machine Learning', 'scikit-learn', 'Healthcare Data'],
+    metrics: [],
+    keyFeatures: [
+      'Feature preparation and engineering on healthcare data',
+      'Model evaluation accounting for class imbalance',
+      'Reproducible training and evaluation workflow'
+    ],
+    externalUrl: 'https://github.com/ayushkrsahu/healthedgeai'
   }
 ];
 

@@ -100,7 +100,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({
                   Data Engineer <span className="font-normal text-slate-500">|</span> 2+ Years of Experience <span className="font-normal text-slate-500">|</span> MSc Big Data Science (Distinction)
                 </p>
                 <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400">
-                  United Kingdom (Remote) | +44 7405813318 | ayushkusahuk@gmail.com | LinkedIn | GitHub | Portfolio
+                  Bhubaneswar, Odisha, India | +44 7405813318 | ayushkusahuk@gmail.com | LinkedIn | GitHub | Portfolio
                 </p>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Graduate visa valid until November 2027 · No sponsorship required
